@@ -1,6 +1,6 @@
 # Ejercicio 1
 
-**Nombre**: [tu nombre va aqui]
+**Nombre**: Julieta Ayelli
 
 ---
 
