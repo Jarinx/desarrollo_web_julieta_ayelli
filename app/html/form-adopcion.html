@@ -94,12 +94,37 @@
                     <input type="radio" id="unidad-edad-meses" name="unidad-edad-meses" value="meses">Meses
                 </div>
                 <div>
-                    <label for="fecha-entrega">Fecha disponible para entrega</label>
+                    <label for="fecha-entrega">Fecha disponible para entrega (obligatorio)</label>
                     <input type="datetime-local" id="fecha-entrega" name="fecha-entrega">
                 </div>
-
+                <div>
+                    <label for="descripcion">Descripción (opcional)</label>
+                    <textarea id="descripcion" name="descripcion" cols="50" rows="10" placeholder="Ej: Es un perro muy juguetón y cariñoso."></textarea>
+                </div>
+                <div>
+                    <label for="foto">Foto (obligatorio)</label>
+                    <small>Mínimo 1 y máximo 5 imágenes</small>
+                    <div id="fotos">
+                        <input type="file" name="foto-1">
+                    </div>
+                    <div>
+                        <button type="button" id="btn-agregar-foto">Agregar otra foto</button>
+                    </div>
+                </div>
             </fieldset>
-
+            <div>
+                <button type="button" id="btn-enviar">Agregar este aviso de adopción</button>
+            </div>
         </form>
+
+        <!-- Mensaje aviso recibido -->
+        <div>
+            <h2>Hemos recibido la informaci´ón de adopción, ¡muchas gracias y suerte!</h2>
+            <a href="portada.html">Volver a la portada</a>
+        </div>
     </body>
+
+    <div>
+        
+    </div>
 </html>
