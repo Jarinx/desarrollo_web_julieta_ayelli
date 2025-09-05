@@ -1,0 +1,105 @@
+:root{
+  --bg:#0b0f14;
+  --card:#121822;
+  --ink:#e8eef7;
+  --muted:#a9b6c8;
+  --accent:#5cc8ff;
+  --error:#ff6b6b;
+  
+}
+
+*{box-sizing:border-box}
+html,body{
+  margin:0; padding:0;
+  background:var(--bg); color:var(--ink);
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  line-height:1.45;
+}
+
+/* ---------- Header ---------- */
+header{
+  border-bottom:1px solid #1f2a3a;
+  background:linear-gradient(180deg, rgba(18,24,34,.85), rgba(18,24,34,.65));
+}
+header > div{
+  max-width:980px; margin:0 auto; padding:28px 16px;
+}
+header h1{
+  margin:0 0 6px; font-size:1.9rem; text-align:center; color:var(--ink);
+}
+header h2{
+  margin:0 0 16px; font-weight:500; color:var(--muted); text-align:center;
+}
+
+/* ---------- Navbar (links) ---------- */
+header nav {
+  display: flex;
+  justify-content: center; 
+  flex-wrap: wrap;          
+  gap: 12px;                
+  margin-top: 16px;
+}
+header a{
+  padding:10px 14px; margin:6px 8px 0 0;
+  background:#0f1622; color:var(--ink); text-decoration:none;
+  border:1px solid #2b3a52; border-radius:12px;;
+}
+header a:hover{ background:#131c2a; border-color:#3a5071; transform:translateY(-1px) }
+header a:active{ transform:translateY(0) }
+
+/* ---------- Tabla últimos 5 avisos ---------- */
+table{
+  width:min(980px, 96%);
+  margin:16px auto 40px;
+  border-collapse:collapse;
+  border:1px solid #1f2a3a;
+  background:var(--card);
+  overflow:hidden;
+  box-shadow:0 1px 0 rgba(0,0,0,.25) inset, 0 0 0 1px rgba(31,42,58,.35);
+}
+caption{
+  caption-side:top;
+  padding:14px 12px;
+  font-weight:600; color:var(--ink);
+  text-align:center;
+}
+thead th{
+  background:#0f1622;
+  color:var(--muted);
+  font-weight:600;
+  padding:12px 10px;
+  text-align:center;
+  border-bottom:1px solid #1f2a3a;
+  border-right: 1px solid #1f2a3a;
+}
+tbody td{
+  padding:12px 10px;
+  border-bottom:1px solid #1b2535;
+  border-right: 1px solid #1f2a3a;
+  vertical-align:middle;
+  text-align:center;
+  
+}
+tbody tr:nth-child(odd){ background:rgba(255,255,255,0.02)}
+tbody tr:hover{ background:rgba(92,200,255,0.07) }
+
+/* Columnas con texto más estrecho en móviles */
+@media (max-width:680px){
+  thead th, tbody td{ padding:10px 8px; font-size:.95rem }
+  caption{ font-size:.95rem }
+}
+
+/* ---------- Imágenes de la tabla ---------- */
+.pet-foto-list{
+  width:120px; height:90px;    /* proporción 4:3, consistente, miniatura */
+  object-fit:cover;
+  border-radius:10px;
+  border:1px solid #22314a;
+  display:block;
+  margin: 0 auto;
+  box-shadow:0 0 0 1px rgba(31,42,58,.35) inset;
+}  
+
+/* ---------- Otros ---------- */
+br{ display:block; margin:0; } /* mantiene tu <br> sin saltos grandes */
+
