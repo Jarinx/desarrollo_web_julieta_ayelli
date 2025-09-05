@@ -4,6 +4,8 @@
     <head>
         <title>PET x FAMILY</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="preload" href="../js/reg-com.js" as="script">
+        <link rel="preload" href="../js/form-adopcion.js" as="script">
     </head>
 
     <!-- Body -->
@@ -14,6 +16,7 @@
             <h1>Formulario para agregar un aviso de adopción</h1>
         </header>
 
+        <main>
         <!-- Formulario -->
         <form id="form-adopcion">
             <!-- ¿donde? -->
@@ -23,8 +26,6 @@
                     <label for="region">Región (obligatorio)</label>
                     <select id="region" name="region" required>
                         <option value="">-- Selecciona región --</option>
-                        <option value="rm">Región Metropolitana</option>
-                        <option value="valp">Región de Valparaíso</option>
                     </select>
                 </div>
                 <div>
@@ -59,17 +60,17 @@
                 </div>
                 <div>
                     <label for="contactar-por">Contactar por (opcional)</label>
-                    <select id="contactar-por" name="contactar-por" size="6" multiple>
-                        <option value="">-- Selecciona medio de contacto --</option>
-                        <option value="whatsapp">WhatsApp</option>
-                        <option value="telegram">Telegram</option>
-                        <option value="x">X</option>
-                        <option value="instagram">Instagram</option>
-                        <option value="tiktok">TikTok</option>
-                        <option value="otra">Otra</option>
-                    </select>
+                    <div id="contactar-por" name="contactar-por" size="6" multiple>
+                        <label><input type="checkbox" value="whatsapp">WhatsApp</label>
+                        <label><input type="checkbox" value="telegram">Telegram</label>
+                        <label><input type="checkbox" value="x">X</label>
+                        <label><input type="checkbox" value="instagram">Instagram</label>
+                        <label><input type="checkbox" value="tiktok">TikTok</label>
+                        <label><input type="checkbox" value="otra">Otra</label>
+                    </div>
                     <small>Máximo 5 opciones</small>
                 </div>
+                <div id="contactar-ids"></div>
             </fieldset>
 
             <!-- ¿mascota? -->
@@ -86,7 +87,7 @@
                 </div>
                 <div>
                     <label for="edad">Edad (obligatorio)</label>
-                    <input type="number" id="edad" name="edad" maxlength="50" placeholder="Ej: 2" required>
+                    <input type="number" id="edad" name="edad" min="1" placeholder="Ej: 2" required>
                 </div>
                 <div>
                     <label for="unidad-edad">Unidad de edad (obligatorio)</label>
@@ -118,13 +119,23 @@
         </form>
 
         <!-- Mensaje aviso recibido -->
-        <div>
-            <h2>Hemos recibido la informaci´ón de adopción, ¡muchas gracias y suerte!</h2>
+        <div id="msg-aviso-recibido">
+            <h2>Hemos recibido la información de adopción, muchas gracias y suerte!</h2>
             <a href="portada.html">Volver a la portada</a>
         </div>
-    </body>
+        </main>
 
-    <div>
-        
-    </div>
+        <!-- Modal confirmación -->
+        <div id="modal-confirm" role="dialog" aria-modal="true" aria-labelledby="msg-confirm">
+            <h2 id="msg-confirm">¿Está seguro que desea agregar este aviso de adopción?</h2>
+            <div>
+                <button id="btn-confirm-si">Sí, estoy seguro</button>
+                <button id="btn-confirm-no">No, no estoy seguro, quiero volver al formulario</button>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script lang="javascript" src="../js/reg-com.js"></script>
+        <script lang="javascript" src="../js/form-adopcion.js"></script>
+    </body>
 </html>
