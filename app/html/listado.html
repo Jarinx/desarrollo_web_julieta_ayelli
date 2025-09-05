@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>PET x FAMILY — Listado de adopciones</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/listado.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="hdr-wrap">
+      <h1>Listado de Avisos de Adopción</h1>
+      <h2>Haz clic en cualquier fila para ver el detalle</h2>
+      <nav>
+        <a href="form-adopcion.html">Agregar nuevo aviso</a>
+        <a href="estadisticas.html">Estadísticas</a>
+        <a class="primary" href="portada.html">
+          <!-- flecha back en SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+          Volver a la portada
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- LISTA -->
+    <section id="lista" class="card">
+      <table id="tablaAvisos">
+        <caption>Últimos avisos publicados</caption>
+        <thead>
+          <tr>
+            <th>Fecha Publicación</th>
+            <th>Fecha Entrega</th>
+            <th>Comuna</th>
+            <th>Sector</th>
+            <th>Cantidad / Tipo / Edad</th>
+            <th>Nombre Contacto</th>
+            <th>Total fotos</th>
+          </tr>
+        </thead>
+        <tbody><!-- se inyecta desde JS --></tbody>
+      </table>
+    </section>
+
+    <!-- DETALLE -->
+    <section id="detalle" class="card hidden" aria-live="polite">
+      <div class="det-header">
+        <h3 id="detTitulo">Detalle del aviso</h3>
+        <div class="det-actions">
+          <a href="#" id="volverListado" class="btn">← Volver al listado</a>
+          <a href="portada.html" class="btn primary">Volver a la portada</a>
+        </div>
+      </div>
+
+      <div class="det-grid">
+        <div>
+          <h4>Información general</h4>
+          <ul id="detInfo" class="info-list"></ul>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <ul id="detContacto" class="info-list"></ul>
+        </div>
+      </div>
+
+      <div>
+        <h4>Fotos (320×240)</h4>
+        <div id="detFotos" class="fotos-grid"><!-- thumbs 320x240 --></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de imagen (800x600) -->
+  <div id="imgModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="imgTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <h5 id="imgTitle">Foto 800×600</h5>
+        <button class="btn" id="cerrarModal">Cerrar ✕</button>
+      </div>
+      <div class="modal-body">
+        <img id="imgGrande" alt="Foto ampliada 800x600" />
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/listado.js"></script>
+</body>
+</html>
