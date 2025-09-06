@@ -2,10 +2,11 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <title>PET x FAMILY</title>
+        <title>PxF - Formulario de Adopción</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="preload" href="../js/reg-com.js" as="script">
         <link rel="preload" href="../js/form-adopcion.js" as="script">
+        <link rel="stylesheet" href="../css/theme.css">
         <link rel="stylesheet" href="../css/form-adopcion.css">
     </head>
 
@@ -68,9 +69,9 @@
                             <small class="hint">Formato válido: +NNN.NNNNNNNN</small>
                         </div>
                         <div>
-                            <label for="contactar-por">Contactar por (opcional)</label>
+                            <label>Contactar por (opcional)</label>
                             <small class="hint">Máximo 5 opciones</small>
-                            <div id="contactar-por" name="contactar-por" size="6" multiple class="row cols-3">
+                            <div id="contactar-por" class="row cols-3">
                                 <label><input type="checkbox" value="whatsapp">WhatsApp</label>
                                 <label><input type="checkbox" value="telegram">Telegram</label>
                                 <label><input type="checkbox" value="x">X</label>
@@ -88,7 +89,7 @@
                     <legend>¿Qué mascota ofrece en adopción?</legend>
                     <div class="row cols-2">
                         <div>
-                            <label for="tipo-mascota" class="obligatorio">Tipo de mascota (obligatorio)</label>
+                            <label class="obligatorio">Tipo de mascota (obligatorio)</label>
                             <input type="radio" id="tipo-mascota-perro" name="tipo-mascota" value="perro">Perro
                             <input type="radio" id="tipo-mascota-gato" name="tipo-mascota" value="gato">Gato
                         </div>
@@ -103,7 +104,7 @@
                             <input type="number" id="edad" name="edad" min="1" placeholder="Ej: 2" required>
                         </div>
                         <div>
-                            <label for="unidad-edad" class="obligatorio">Unidad de edad (obligatorio)</label>
+                            <label class="obligatorio">Unidad de edad (obligatorio)</label>
                             <input type="radio" id="unidad-edad-anios" name="unidad-edad" value="años">Años
                             <input type="radio" id="unidad-edad-meses" name="unidad-edad" value="meses">Meses
                         </div>

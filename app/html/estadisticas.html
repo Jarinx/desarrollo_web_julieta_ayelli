@@ -1,13 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <title>PET x FAMILY</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="../css/estadisticas.css" />
+  <meta charset="utf-8" >
+  <title>PxF - Estadísticas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" >
+  <link rel="stylesheet" href="../css/theme.css" >
+  <link rel="stylesheet" href="../css/estadisticas.css" >
 </head>
 <body>
-    
-</body>
+  <!-- Header -->
+  <header>
+    <a href="portada.html" class="back-link">⟵ Volver a la portada</a>
+    <h1>Estadísticas</h1>
+    <h2>Resumen visual del sistema de adopciones</h2>
+  </header>
 
+  <main>
+    <section class="grid">
+      <!-- Línea: avisos por día -->
+      <article class="card">
+        <header class="card-head">
+          <h3>Avisos por día</h3>
+          <p class="muted">Eje X: días · Eje Y: cantidad de avisos</p>
+        </header>
+
+        <figure class="chart-box">
+          <img src="../images/graficos/linea.png" alt="Gráfico de líneas de avisos por día" loading="lazy" >
+          <figcaption>Gráfico de líneas</figcaption>
+        </figure>
+      </article>
+
+      <!-- Torta: total por tipo (gato/perro) -->
+      <article class="card">
+        <header class="card-head">
+          <h3>Total por tipo de mascota</h3>
+          <p class="muted">Distribución general de avisos por tipo</p>
+        </header>
+
+        <figure class="chart-box">
+          <img src="../images/graficos/torta.png" alt="Gráfico de torta por tipo de mascota" loading="lazy" >
+          <figcaption>Gráfico de torta</figcaption>
+        </figure>
+      </article>
+
+      <!-- Barras: por mes (gato/perro) -->
+      <article class="card">
+        <header class="card-head">
+          <h3>Avisos por mes (gatos vs perros)</h3>
+          <p class="muted">Eje X: meses · Eje Y: cantidad de avisos</p>
+        </header>
+
+        <figure class="chart-box">
+          <img src="../images/graficos/barras.png" alt="Gráfico de barras por mes con dos series (gatos y perros)" loading="lazy" >
+          <figcaption>Gráfico de barras (dos series)</figcaption>
+        </figure>
+      </article>
+    </section>
+    
+  </main>
+
+</body>
 </html>
