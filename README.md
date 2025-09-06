@@ -1,3 +1,7 @@
 **Branches 'Tarea n' (n = {1, 2...})**: para las tareas
 
-Utilicé plantillas de W3 Schools como referencias para el layout y diseño visual de mi aplicación. Estas plantillas son de libre uso y se pueden revisar en el siguiente link: [W3.CSS Templates](https://www.w3schools.com/w3css/w3css_templates.asp). Las descargué y están guardadas en este repositorio, dentro de la carpeta `templates`.
+**Consideraciones Tarea 1:**
+- En zonas donde se pedía tener el link a la portada al final de la página, lo cambié para que estuviera en el header, ya que se me hacía más intuitivo y visualmente estético.
+- Con respecto a los CSS: tengo el `theme.css`, donde separé todas las características generales de la aplicación para mantener coherencia entre las páginas. Luego, para cada CSS específico, puse reglas específicas a esa página.
+- No hay Javascript para *portada* ni *estadísticas*, ya que no fue necesario.
+- Los colores quedaron un poco oscuros, pero esto se corregirá para la próxima iteración.
