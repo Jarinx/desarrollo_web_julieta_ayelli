@@ -32,13 +32,13 @@
                         <legend>¿Dónde?:</legend>
                         <div class="row cols-2">
                             <div>
-                            <label for="region" class="obligatorio">Región (obligatorio)</label>
+                            <label for="region" class="obligatorio">Región</label>
                             <select id="region" name="region" required>
                                 <option value="">-- Selecciona región --</option>
                             </select>
                             </div>
                             <div>
-                            <label for="comuna" class="obligatorio">Comuna (obligatorio)</label>
+                            <label for="comuna" class="obligatorio">Comuna</label>
                             <select id="comuna" name="comuna" required>
                                 <option value="">-- Selecciona comuna --</option>
                             </select>
@@ -55,12 +55,12 @@
                     <fieldset>
                     <legend>¿Contacto de esta publicación?</legend>
                         <div>
-                            <label for="nombre" class="obligatorio">Nombre (obligatorio)</label>
+                            <label for="nombre" class="obligatorio">Nombre</label>
                             <input type="text" id="nombre" name="nombre" minlength="3" maxlength="200" placeholder="Ej: Juan Pérez"><br>
                             <small class="hint">Mínimo 3 y máximo 100 caracteres</small>
                         </div>
                         <div>
-                            <label for="email" class="obligatorio">Email (obligatorio)</label>
+                            <label for="email" class="obligatorio">Email</label>
                             <input type="email" id="email" name="email" maxlength="100" placeholder="Ej: hola@gmail.com">
                         </div>
                         <div>
@@ -69,15 +69,15 @@
                             <small class="hint">Formato válido: +NNN.NNNNNNNN</small>
                         </div>
                         <div>
-                            <label>Contactar por (opcional)</label>
+                            <label for="contactar-por">Contactar por (opcional)</label>
                             <small class="hint">Máximo 5 opciones</small>
                             <div id="contactar-por" class="row cols-3">
-                                <label><input type="checkbox" value="whatsapp">WhatsApp</label>
-                                <label><input type="checkbox" value="telegram">Telegram</label>
-                                <label><input type="checkbox" value="x">X</label>
-                                <label><input type="checkbox" value="instagram">Instagram</label>
-                                <label><input type="checkbox" value="tiktok">TikTok</label>
-                                <label><input type="checkbox" value="otra">Otra</label>
+                                <label><input type="checkbox" minlength="4" maxlength="50" value="whatsapp">WhatsApp</label>
+                                <label><input type="checkbox" minlength="4" maxlength="50" value="telegram">Telegram</label>
+                                <label><input type="checkbox" minlength="4" maxlength="50" value="x">X</label>
+                                <label><input type="checkbox" minlength="4" maxlength="50" value="instagram">Instagram</label>
+                                <label><input type="checkbox" minlength="4" maxlength="50" value="tiktok">TikTok</label>
+                                <label><input type="checkbox" minlength="4" maxlength="50" value="otra">Otra</label>
                             </div>
                             
                         </div>
@@ -89,38 +89,36 @@
                     <legend>¿Qué mascota ofrece en adopción?</legend>
                     <div class="row cols-2">
                         <div>
-                            <label class="obligatorio">Tipo de mascota (obligatorio)</label>
+                            <label for="tipo-mascota" class="obligatorio">Tipo de mascota</label>
                             <input type="radio" id="tipo-mascota-perro" name="tipo-mascota" value="perro">Perro
                             <input type="radio" id="tipo-mascota-gato" name="tipo-mascota" value="gato">Gato
                         </div>
                         <div>
-                            <label for="cantidad" class="obligatorio">Cantidad (obligatorio)</label>
+                            <label for="cantidad" class="obligatorio">Cantidad</label>
                             <input type="number" id="cantidad" name="cantidad" min="1" placeholder="Ej: 3" required> 
                         </div>
                     </div>
                     <div class="row cols-2">
                         <div>
-                            <label for="edad" class="obligatorio">Edad (obligatorio)</label>
+                            <label for="edad" class="obligatorio">Edad</label>
                             <input type="number" id="edad" name="edad" min="1" placeholder="Ej: 2" required>
                         </div>
                         <div>
-                            <label class="obligatorio">Unidad de edad (obligatorio)</label>
+                            <label for="unidad-edad" class="obligatorio">Unidad de edad</label>
                             <input type="radio" id="unidad-edad-anios" name="unidad-edad" value="años">Años
                             <input type="radio" id="unidad-edad-meses" name="unidad-edad" value="meses">Meses
                         </div>
                     </div>
                         
                         <div>
-                            <label for="fecha-entrega" class="obligatorio">Fecha disponible para entrega (obligatorio)</label>
+                            <label for="fecha-entrega" class="obligatorio">Fecha disponible para entrega</label>
                             <input type="datetime-local" id="fecha-entrega" name="fecha-entrega">
                         </div>
                         <div>
                             <label for="descripcion">Descripción (opcional)</label>
                             <textarea id="descripcion" name="descripcion" cols="50" rows="10" placeholder="Ej: Es un perro muy juguetón y cariñoso."></textarea>
                         </div>
-                        <div class="card" style="margin-top:12px">
-                            Fotos (opcional)
-                            <small class="hint">Mínimo 1 y máximo 5 imágenes</small>
+                        <div class="card obligatorio" style="margin-top:12px">Fotos <small class="hint">Mínimo 1 y máximo 5 imágenes</small>
                             <div id="fotos">
                                 <input type="file" name="foto-1">
                             </div>

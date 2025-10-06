@@ -92,6 +92,36 @@ function agregarFoto() {
     input.type = 'file';
     input.name = `foto-${fotoCount + 1}`;
     wrap.appendChild(input);
+    actualizarBotonesEliminarFoto();
+}
+function eliminarFoto(index) {
+    const wrap = document.querySelector('#fotos');
+    const inputs = wrap.querySelectorAll('input[type="file"]');
+    // Evitar eliminar si solo queda 1 input
+    if (inputs.length <= 1) return;
+    if (inputs[index]) {
+        wrap.removeChild(inputs[index]);
+    }
+}
+
+// Agrega un botón "Eliminar" junto a cada input de foto
+function actualizarBotonesEliminarFoto() {
+    const wrap = document.querySelector('#fotos');
+    const inputs = wrap.querySelectorAll('input[type="file"]');
+    // Elimina botones previos
+    wrap.querySelectorAll('.btn-eliminar-foto').forEach(btn => btn.remove());
+    inputs.forEach((input, idx) => {
+        let btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = 'X';
+        btn.className = 'btn-eliminar-foto';
+        btn.style.marginRight = '8px';
+        btn.addEventListener('click', () => {
+            eliminarFoto(idx);
+            actualizarBotonesEliminarFoto();
+        });
+        input.after(btn);
+    });
 }
 
 /* (2) VALIDACIÓN */
@@ -100,61 +130,63 @@ function validarForm() {
 
     /* -- ¿DONDE? -- */
     let region = regionSelect.value;
-    if (!region) errors.push("Debes seleccionar una región."); 
+    if (!region) errors.push("Región: debes seleccionar una región."); 
     let comuna = comunaSelect.value;
-    if (!comuna) errors.push("Debes seleccionar una comuna.");
+    if (!comuna) errors.push("Comuna: debes seleccionar una comuna.");
     let sector = document.getElementById('sector').value;
-    if (sector.length > 100) errors.push("El sector no puede exceder 100 caracteres.");
+    if (sector.length > 100) errors.push("Sector: el sector no puede exceder 100 caracteres.");
 
     /* -- ¿CONTACTO? -- */
     let nombre = document.getElementById('nombre').value;
-    if (nombre.length < 3 || nombre.length > 200) errors.push("El nombre debe tener entre 3 y 200 caracteres."); 
+    if (nombre.length < 3 || nombre.length > 200) errors.push("Nombre: el nombre debe tener entre 3 y 200 caracteres."); 
     let email = document.getElementById('email').value;
-    if (!email) errors.push("Debes ingresar un email.");
+    if (!email) errors.push("Email: debes ingresar un email.");
     else {
-        if (email.length > 100) errors.push("El email no puede exceder 100 caracteres.");
+        if (email.length > 100) errors.push("Email: el email no puede exceder 100 caracteres.");
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // patrón básico de email
-        if (!emailPattern.test(email)) errors.push("El email no tiene un formato válido.");
+        if (!emailPattern.test(email)) errors.push("Email: el email no tiene un formato válido.");
     }
     let celular = document.getElementById('celular').value;
     if (celular) {
         const celularPattern = /^\+\d{3}\.\d{8}$/; // +código-país.número
-        if (!celularPattern.test(celular)) errors.push("El número de celular no tiene un formato válido.");
+        if (!celularPattern.test(celular)) errors.push("Celular: el número de celular no tiene un formato válido.");
     }
     let contactarChecked = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
-    if (contactarChecked.length > 5) errors.push("Solo puedes seleccionar hasta 5 opciones de contacto.");
+    if (contactarChecked.length > 5) errors.push("Contactar por: solo puedes seleccionar hasta 5 opciones de contacto.");
     contactarChecked.forEach(cb => {
         const value = (document.getElementById(`contactar-${cb.value}`)?.value || '').trim();
         if (value.length && (value.length < 4 || value.length > 50)) {
-            errors.push(`El ID/URL para ${cb.parentElement.textContent} debe tener entre 4 y 50 caracteres.`);
+            errors.push(`Contactar por: el ID/URL para ${cb.parentElement.textContent} debe tener entre 4 y 50 caracteres.`);
         }
     });
 
     /* -- ¿MASCOTA? -- */
     let tipo = document.querySelectorAll('input[for="tipo-mascota"]:checked');
-    if (!tipo) errors.push("Debes seleccionar un tipo de mascota.");
+    if (!tipo) errors.push("Tipo: debes seleccionar un tipo de mascota.");
     let cantidad = document.getElementById('cantidad').value;
     if (!cantidad || isNaN(cantidad) || cantidad < 1) {
-        errors.push("La cantidad de mascotas debe ser mínimo 1.");
+        errors.push("Cantidad: la cantidad de mascotas debe ser mínimo 1.");
     }
     let edad = document.getElementById('edad').value;
     if (!edad || isNaN(edad) || edad < 1) {
-        errors.push("La edad debe ser mínimo 1");
+        errors.push("Edad: la edad debe ser mínimo 1.");
     }
     let unidad = document.querySelectorAll('input[for="unidad-edad"]:checked');
-    if (!unidad) errors.push("Debes seleccionar una unidad de edad.");
+    if (!unidad) errors.push("Unidad de edad: debes seleccionar una unidad de edad.");
     let fechaEntrega = document.getElementById('fecha-entrega').value;
-    if (!fechaEntrega) errors.push("Debes seleccionar una fecha y hora de entrega.");
+    if (!fechaEntrega) errors.push("Fecha disponible para entrega: debes seleccionar una fecha y hora de entrega.");
     else {
         const fechaPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
-        if (!fechaPattern.test(fechaEntrega)) errors.push("La fecha debe tener el formato año-mes-día hora:minuto.");
+        if (!fechaPattern.test(fechaEntrega)) errors.push("Fecha disponible para entrega: la fecha debe tener el formato año-mes-día hora:minuto.");
         else {
             const prefill = document.getElementById('fecha-entrega').min;
-            if (fechaEntrega < prefill) errors.push("La fecha de entrega debe ser mayor a la fecha actual + 3 horas.");
+            if (fechaEntrega < prefill) errors.push("Fecha disponible para entrega: la fecha de entrega debe ser mayor a la fecha actual + 3 horas.");
         }
     }
-    let fotos = document.getElementById('fotos').querySelectorAll('input[type="file"]');
-    if (fotos.length < 1 || fotos.length > 5) errors.push("Se debe adjuntar al menos 1 una foto (máximo 5).");
+    let fotosInputs = document.getElementById('fotos').querySelectorAll('input[type="file"]');
+    let fotosFiles = Array.from(fotosInputs).reduce((acc, input) => acc + (input.files.length > 0 ? 1 : 0), 0);
+    if (fotosFiles < 1) errors.push("Fotos: se debe adjuntar al menos 1 foto.");
+    if (fotosFiles > 5) errors.push("Fotos: solo se aceptan un máximo de 5 fotos.");
     
     return errors;
 }
@@ -192,6 +224,7 @@ function cancelarEnvio() {
 document.addEventListener('DOMContentLoaded', () => {
     cargarRegiones();
     prefillFecha();
+    actualizarBotonesEliminarFoto();
     Array.from(document.querySelectorAll('input[type="checkbox"]')).forEach(cb => cb.addEventListener('change', contactarMulti));
     document.querySelector('#btn-agregar-foto').addEventListener('click', agregarFoto);
     document.getElementById('btn-enviar').addEventListener('click', submitForm);

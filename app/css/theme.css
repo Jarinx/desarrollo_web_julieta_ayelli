@@ -129,7 +129,7 @@ select, textarea{
 input[type="checkbox"], input[type="radio"], input[type="file"]{ margin-right:6px; }
 fieldset{ border:1px solid var(--line); border-radius:12px; padding:14px; margin:14px 0; }
 legend{ padding:0 6px; color:var(--muted); font-weight:600; text-align:center; }
-.obligatorio::after{ content:" *"; color:var(--error); }
+.obligatorio::before{ content:"* "; color:var(--error); }
 small.hint{ color:var(--muted); }
 
 /* Bloques de error y validación */
