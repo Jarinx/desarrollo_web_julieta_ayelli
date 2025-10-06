@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+from datetime import datetime, timedelta
 
 
 # 1) Gráfico de líneas: avisos por día
-dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+dias = [(datetime.now() - timedelta(days=i)).strftime("%d/%m/%Y") for i in range(6, -1, -1)]
 avisos = np.random.randint(1, 10, size=7)
 
 print(avisos)#
