@@ -10,7 +10,7 @@ tbody tr:hover{ cursor:pointer; } /* color hover ya está en theme */
 
 /* Detalle */
 .det-header{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px; }
-.det-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+.det-actions{ display:flex; gap:10px; flex-wrap:wrap;}
 h3{ margin:0 0 6px; }
 h4{ margin:12px 0 10px; color:var(--muted); }
 .info-list{ list-style:none; margin:0; padding:0; }
@@ -50,6 +50,5 @@ h4{ margin:12px 0 10px; color:var(--muted); }
   max-height:100%;
   object-fit: contain;   /* mantiene proporción sin recortar */
   border-radius:10px;
-  border:1px solid #22314a;
 }
 

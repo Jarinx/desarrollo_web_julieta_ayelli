@@ -11,5 +11,5 @@ h1{ font-size:1.6rem; margin:0 0 12px; text-align:center; }
 /* Mensaje de envío correcto */
 #msg-aviso-recibido{
   display:none; text-align:center; padding:24px;
-  border:1px solid var(--line); background:#0e171f; border-radius:var(--radius);
+  border:1px solid var(--line); background:#b8ebb3; border-radius:var(--radius);
 }

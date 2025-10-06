@@ -15,12 +15,12 @@ main{ max-width:1280px; margin:22px auto; padding:0 16px 32px; }
 
 /* Caja de gráfico (imagen estática como placeholder) */
 .chart-box{
-  border:1px dashed #2b3a52; border-radius:12px;
-  padding:10px; margin:12px 0; background:#0f1622;
+  border:1px dashed #ffffff; border-radius:12px;
+  padding:10px; margin:12px 0; background:#cacaca;
   display:flex; flex-direction:column; align-items:center; gap:6px;
 }
 .chart-box img{
   max-width:100%; height:auto; display:block;
-  border-radius:10px; border:1px solid #22314a;
+  border-radius:10px;;
 }
 .chart-box figcaption{ color:var(--muted); font-size:.95rem; }
