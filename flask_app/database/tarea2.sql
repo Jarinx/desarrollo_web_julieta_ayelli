@@ -1,3 +1,4 @@
+-- Active: 1759850931489@@127.0.0.1@3306@mysql
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -7,6 +8,9 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema tarea2
 -- -----------------------------------------------------
+CREATE USER 'cc5002'@'localhost' IDENTIFIED BY 'cc5002';
+GRANT ALL PRIVILEGES ON tarea2.* TO 'cc5002'@'localhost';
+FLUSH PRIVILEGES;
 
 -- -----------------------------------------------------
 -- Schema tarea2
