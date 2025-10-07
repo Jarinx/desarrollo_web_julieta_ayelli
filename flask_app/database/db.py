@@ -1,5 +1,6 @@
-from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey
-from sqlalchemy.orm import sessionmaker, declarative_base, relationship
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models import Region, Comuna, AvisoAdopcion, Foto, ContactarPor
 
 DB_NAME = "tarea2"
 DB_USERNAME = "cc5002"
