@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 import hashlib
 import filetype
 import os
+from database import db
 
 UPLOAD_FOLDER = 'static/uploads'
 
@@ -16,4 +17,5 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 @app.route("/portada", methods=["GET", "POST"])
 def portada():
     if request.method == "GET":
-        return render_template("portada.html")
+        avisos = db.get_ultimos_avisos()
+        return render_template("portada/portada.html", avisos=avisos)

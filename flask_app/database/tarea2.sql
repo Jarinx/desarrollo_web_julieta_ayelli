@@ -22,9 +22,8 @@ USE `tarea2` ;
 -- -----------------------------------------------------
 -- User tarea2
 -- -----------------------------------------------------
-CREATE USER 'cc5002'@'localhost' IDENTIFIED BY 'cc5002';
+
 GRANT ALL PRIVILEGES ON tarea2.* TO 'cc5002'@'localhost';
-FLUSH PRIVILEGES;
 
 -- -----------------------------------------------------
 -- Table `tarea2`.`region`
