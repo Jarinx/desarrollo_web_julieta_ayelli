@@ -1,6 +1,6 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
-from database.models import Base, AvisoAdopcion, Foto, Comuna, Region, ContactarPor
+from models import Base, AvisoAdopcion, Foto, Comuna, Region, ContactarPor
 
 DB_NAME = "tarea2"
 DB_USERNAME = "cc5002"
@@ -14,7 +14,7 @@ DATABASE_URL = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}
 engine = create_engine(DATABASE_URL, echo=False, future=True)
 SessionLocal = sessionmaker(bind=engine)
 
-# --- Database Functions ---
+# --- DATABASE FUNCTIONS ---
 def get_ultimos_avisos(limit=5):
     session = SessionLocal()
     avisos = (
@@ -40,3 +40,24 @@ def get_ultimos_avisos(limit=5):
     session.close()
     return resultado
 
+def insert_reg_com(sql_path: str, force: bool = False) -> None:
+    with engine.begin() as conn:
+        existing = conn.execute(text("SELECT COUNT(*) FROM region")).scalar()
+        if existing and not force:
+            print(f"Saltado: ya existen {existing} regiones. Usa force=True para recargar.")
+            return
+
+        if force:
+            # Limpiar respetando FKs
+            conn.execute(text("SET FOREIGN_KEY_CHECKS=0"))
+            conn.execute(text("TRUNCATE TABLE comuna"))
+            conn.execute(text("TRUNCATE TABLE region"))
+            conn.execute(text("SET FOREIGN_KEY_CHECKS=1"))
+
+        # Leer y partir el script en sentencias (simples INSERTs terminados en ;)
+        with open(sql_path, "r", encoding="utf-8") as f:
+            script = f.read()
+
+        statements = [s.strip() for s in script.split(";") if s.strip()]
+        for stmt in statements:
+            conn.exec_driver_sql(stmt)
