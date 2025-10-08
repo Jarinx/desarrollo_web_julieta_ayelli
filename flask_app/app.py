@@ -14,7 +14,8 @@ app.secret_key = "s3cr3t_k3y"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # --- PORTADA ---
-@app.route("/portada", methods=["GET", "POST"])
+@app.route("/")
+@app.route("/portada")
 def portada():
     if request.method == "GET":
         avisos = db.get_ultimos_avisos()
