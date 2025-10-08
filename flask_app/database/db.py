@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
-from models import Base, AvisoAdopcion, Foto, Comuna, Region, ContactarPor
+from database.models import Base, AvisoAdopcion, Foto, Comuna, Region, ContactarPor
 
 DB_NAME = "tarea2"
 DB_USERNAME = "cc5002"
@@ -26,7 +26,7 @@ def get_ultimos_avisos(limit=5):
     resultado = []
     for aviso in avisos:
         # Obtener la primera foto (si existe)
-        foto = aviso.fotos[0].nombre_archivo if aviso.fotos else "default.jpg"
+        foto = aviso.fotos[0].nombre_archivo
         resultado.append({
             "fecha": aviso.fecha_ingreso.strftime("%Y-%m-%d %H:%M"),
             "comuna": aviso.comuna.nombre,
