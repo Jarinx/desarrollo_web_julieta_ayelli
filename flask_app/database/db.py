@@ -61,3 +61,76 @@ def insert_reg_com(sql_path: str, force: bool = False) -> None:
         statements = [s.strip() for s in script.split(";") if s.strip()]
         for stmt in statements:
             conn.exec_driver_sql(stmt)
+
+def get_regiones():
+    session = SessionLocal()
+    regiones = session.query(Region).order_by(Region.nombre).all()
+    session.close()
+    return regiones
+
+def get_comunas_por_region(region_id: int):
+    session = SessionLocal()
+    comunas = session.query(Comuna).filter(Comuna.region_id == region_id).order_by(Comuna.nombre).all()
+    session.close()
+    return comunas
+
+def create_form_adopcion(
+        fecha_ingreso,
+        comuna_id,
+        sector,
+        nombre,
+        email,
+        celular,
+        tipo,
+        cantidad,
+        edad,
+        unidad_medida,
+        fecha_entrega,
+        descripcion,
+        contactos,
+        fotos):
+    
+    allowed_contactos = {'whatsapp', 'telegram', 'x', 'instagram', 'tiktok', 'otra'}
+
+    session = SessionLocal()
+
+    new_aviso = AvisoAdopcion(
+        fecha_ingreso=fecha_ingreso,
+        comuna_id=comuna_id,
+        sector=sector,
+        nombre=nombre,
+        email=email,
+        celular=celular,
+        tipo=tipo,
+        cantidad=cantidad,
+        edad=edad,
+        unidad_medida=unidad_medida,
+        fecha_entrega=fecha_entrega,
+        descripcion=descripcion)
+    
+    session.add(new_aviso)
+    session.commit()  
+
+    for contacto in contactos:
+        nombre = contacto.get("nombre").lower()
+        ident = contacto.get("identificador", None).strip()
+        if nombre in allowed_contactos and ident:
+            new_contacto = ContactarPor(
+                nombre=nombre,
+                identificador=ident,
+                aviso_id=new_aviso.id
+            )
+            session.add(new_contacto)
+
+    for foto in fotos:
+        ruta_archivo = foto.get("ruta_archivo")
+        nombre_archivo = foto.get("nombre_archivo")
+        if ruta_archivo and nombre_archivo:
+            new_foto = Foto(
+                ruta_archivo=ruta_archivo,
+                nombre_archivo=nombre_archivo,
+                aviso_id=new_aviso.id
+            )
+            session.add(new_foto)
+
+    return new_aviso.id

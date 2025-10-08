@@ -18,9 +18,9 @@
                 <h2>Gestionamos la adopción de perritos y gatitos en Chile :3 </h2>
                 <!-- navbar -->
                  <nav>
-                    <a href="form-adopcion.html" class="btn primary">Agregar nuevo aviso de adopción</a>
-                    <a href="listado.html" class="btn primary">Ver listado de adopciones</a>
-                    <a href="estadisticas.html" class="btn primary">Estadísticas</a>
+                    <a href="{{ url_for('form_adopcion') }}" class="btn primary">Agregar nuevo aviso de adopción</a>
+                    <a href="{{ url_for('listado') }}" class="btn primary">Ver listado de adopciones</a>
+                    <a href="{{ url_for('estadisticas') }}" class="btn primary">Estadísticas</a>
                  </nav>
             </div>
         </header>
