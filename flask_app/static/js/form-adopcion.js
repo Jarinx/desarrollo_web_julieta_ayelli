@@ -6,7 +6,7 @@
 let regionSelect = document.getElementById('region');
 let comunaSelect = document.getElementById('comuna');
 
-function cargarRegiones() {
+function cargarRegCom() {
  getRegiones().forEach(region => {
      const option = document.createElement('option');
      option.value = region.id;
@@ -20,8 +20,8 @@ function cargarRegiones() {
      // agregar comunas según región seleccionada
      comunas.forEach(comuna => {
          const option = document.createElement('option');
-         option.value = comuna;
-         option.textContent = comuna;
+         option.value = comuna.id;
+         option.textContent = comuna.nombre;
          comunaSelect.appendChild(option);
      });
      comunaSelect.disabled = false;
@@ -222,7 +222,7 @@ function cancelarEnvio() {
 
 /* --- EVENT LISTENERS --- */
 document.addEventListener('DOMContentLoaded', () => {
-    cargarRegiones();
+    cargarRegCom();
     prefillFecha();
     actualizarBotonesEliminarFoto();
     Array.from(document.querySelectorAll('input[type="checkbox"]')).forEach(cb => cb.addEventListener('change', contactarMulti));
