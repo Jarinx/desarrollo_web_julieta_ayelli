@@ -30,15 +30,32 @@ def change_un_edad(unidad):
 @app.route("/")
 @app.route("/portada")
 def portada():
-    avisos = db.get_ultimos_avisos()
+    avisos = db.get_avisos_adopcion()
     return render_template("portada/portada.html", avisos=avisos)
     
 # --- AVISO ADOPCION ---
 @app.route("/form-adopcion", methods=["GET", "POST"])
 def form_adopcion():
     if request.method == "GET":
-        regiones = db.get_regiones()
-        return render_template("form-adopcion/form-adopcion.html", regiones=regiones)
+        return render_template("form-adopcion/form-adopcion.html")
+    
+def post_aviso_adopcion():
+    if request.method == "POST":
+        form = request.form
+
+        # ¿donde?
+        
+
+
+
+
+
+
+
+# MALO
+def form_adopcion():
+    if request.method == "GET":
+        return render_template("form-adopcion/form-adopcion.html")
     
     elif request.method == "POST":
         form = request.form
