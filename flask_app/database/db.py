@@ -25,7 +25,6 @@ def get_avisos_adopcion(limit=5):
     )
     resultado = []
     for aviso in avisos:
-        # Obtener la primera foto (si existe)
         foto = aviso.fotos[0].nombre_archivo
         resultado.append({
             "fecha": aviso.fecha_ingreso.strftime("%Y-%m-%d %H:%M"),
@@ -34,7 +33,7 @@ def get_avisos_adopcion(limit=5):
             "cantidad": aviso.cantidad,
             "tipo": aviso.tipo,
             "edad": f"{aviso.edad} {'año' if aviso.unidad_medida == 'a' else 'mes'}",
-            "foto": foto,
+            "foto": foto, # Obtener la primera foto (si existe)
             "alt": f"{aviso.cantidad} {aviso.tipo}(s)"
         })
     session.close()

@@ -25,9 +25,11 @@ $ SHOW GRANTS FOR 'cc5002'@'localhost'; # Para verificar que 'cc5002' tiene los 
 $ exit
 
 # --- DB ---
-$ cmd /c "mysql -ucc5002 -p < tarea2.sql"
+$ cmd /c "mysql -ucc5002 -p < tarea2.sql" # Ejecutar tarea2.sql
 
-$ cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < region-comuna.sql" 
+$ cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < region-comuna.sql" # Ejecutar region-comuna.sql
+
+$ cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < data-invent.sql" # Ejecutar data-invent.sql
 
 $ mysql -ucc5002 -p tarea2
 

@@ -2,13 +2,13 @@ from flask import Flask, flash, request, render_template, redirect, url_for, jso
 from database import db
 from werkzeug.utils import secure_filename
 import hashlib
-import filetype
+#import filetype
 import os
 from database import db
 import datetime
 
 UPLOAD_FOLDER = 'static/uploads/avisos'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 

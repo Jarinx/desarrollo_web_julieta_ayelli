@@ -1,7 +1,7 @@
 -- Active: 1759889317216@@127.0.0.1@3306@tarea2
 START TRANSACTION;
 
--- 1) 2025-09-03 10:30 – Providencia – 7 perros, 1 mes
+-- (1)
 INSERT INTO `tarea2`.`aviso_adopcion`
 (`fecha_ingreso`,`comuna_id`,`sector`,`nombre`,`email`,`celular`,
  `tipo`,`cantidad`,`edad`,`unidad_medida`,`fecha_entrega`,`descripcion`)
@@ -12,19 +12,25 @@ VALUES
  'Juana Pérez',
  'juana.perez@example.com',
  '+56 9 7777 7777',
- 'perro', 7, 1, 'm',
+ 'perro', 3, 3, 'm',
  '2025-09-03 10:30:00',
- '7 cachorros encontrados en el parque, sanos y juguetones.'
+ '3 cachorros encontrados en el parque, sanos y juguetones.'
 );
 SET @av1 := LAST_INSERT_ID();
 
 INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
-VALUES ('../../static/images/pets','cachorros.jpg', @av1);
+VALUES ('../../static/images/pets','3-puppies.jpg', @av1);
+INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
+VALUES ('../../static/images/pets','puppy-1.jpg', @av1);
+INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
+VALUES ('../../static/images/pets','puppy-2.jpg', @av1);
+INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
+VALUES ('../../static/images/pets','puppy-3.jpg', @av1);
 
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('whatsapp', '+56977777777', @av1);
 
--- 2) 2025-09-02 17:00 – Providencia – 3 perros, 4 años
+-- (2)
 INSERT INTO `tarea2`.`aviso_adopcion`
 (`fecha_ingreso`,`comuna_id`,`sector`,`nombre`,`email`,`celular`,
  `tipo`,`cantidad`,`edad`,`unidad_medida`,`fecha_entrega`,`descripcion`)
@@ -47,7 +53,7 @@ VALUES ('../../static/images/pets','american-bullys.jpg', @av2);
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('instagram', '@bullys_provi', @av2);
 
--- 3) 2025-09-02 15:45 – Las Condes – 1 gato, 3 meses
+-- (3)
 INSERT INTO `tarea2`.`aviso_adopcion`
 (`fecha_ingreso`,`comuna_id`,`sector`,`nombre`,`email`,`celular`,
  `tipo`,`cantidad`,`edad`,`unidad_medida`,`fecha_entrega`,`descripcion`)
@@ -70,7 +76,7 @@ VALUES ('../../static/images/pets','kitten.jpg', @av3);
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('X', '@GatosLC', @av3);
 
--- 4) 2025-09-02 11:11 – Las Condes – 1 gato, 3 años
+-- (4)
 INSERT INTO `tarea2`.`aviso_adopcion`
 (`fecha_ingreso`,`comuna_id`,`sector`,`nombre`,`email`,`celular`,
  `tipo`,`cantidad`,`edad`,`unidad_medida`,`fecha_entrega`,`descripcion`)
@@ -93,7 +99,7 @@ VALUES ('../../static/images/pets','gato-dormido.jpg', @av4);
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('telegram', 't.me/gatos_losdom', @av4);
 
--- 5) 2025-08-31 19:20 – Lo Barnechea – 1 perro, 2 meses
+-- (5)
 INSERT INTO `tarea2`.`aviso_adopcion`
 (`fecha_ingreso`,`comuna_id`,`sector`,`nombre`,`email`,`celular`,
  `tipo`,`cantidad`,`edad`,`unidad_medida`,`fecha_entrega`,`descripcion`)
@@ -116,4 +122,28 @@ VALUES ('../../static/images/pets','puppy-pasto.jpg', @av5);
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('whatsapp', '+56944444444', @av5);
 
+-- (6)
+INSERT INTO `tarea2`.`aviso_adopcion`
+(`fecha_ingreso`,`comuna_id`,`sector`,`nombre`,`email`,`celular`,
+ `tipo`,`cantidad`,`edad`,`unidad_medida`,`fecha_entrega`,`descripcion`)
+VALUES
+('2025-08-26 13:20:00',
+ (SELECT id FROM `tarea2`.`comuna` WHERE nombre='Huechuraba'),
+  NULL,
+ 'Javiera Rojas',
+ 'javiera.rojas@example.com',
+  '+56 9 1234 1234',
+ 'gato', 1, 5, 'a',
+ '2025-08-30 12:00:00',
+  NULL
+);
+SET @av6 := LAST_INSERT_ID();
+
+INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
+VALUES ('../../static/images/pets','gato-5-annos.jpg', @av6);
+
+INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
+VALUES ('whatsapp', '+56944444444', @av6);
+
+-- COMMIT
 COMMIT;
