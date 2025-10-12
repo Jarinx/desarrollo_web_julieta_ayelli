@@ -14,6 +14,20 @@ DATABASE_URL = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}
 engine = create_engine(DATABASE_URL, echo=False, future=True)
 SessionLocal = sessionmaker(bind=engine)
 
+# -- helpers --
+def plural_unidad(unidad, edad):
+    if unidad == 'a':
+        if edad > 1:
+            return 'años'
+        else:
+            return 'año'
+    elif unidad == 'm':
+        if edad > 1:
+            return 'meses'
+        else:
+            return 'mes'
+    return unidad
+
 # --- DATABASE FUNCTIONS ---
 def get_avisos_adopcion(limit=5):
     session = SessionLocal()
@@ -29,14 +43,17 @@ def get_avisos_adopcion(limit=5):
         resultado.append({
             "fecha": aviso.fecha_ingreso.strftime("%Y-%m-%d %H:%M"),
             "comuna": aviso.comuna.nombre,
-            "sector": aviso.sector,
+            "sector": f"{'No proporcionado' if aviso.sector == None else aviso.sector}",
             "cantidad": aviso.cantidad,
-            "tipo": aviso.tipo,
-            "edad": f"{aviso.edad} {'año' if aviso.unidad_medida == 'a' else 'mes'}",
+            "tipo": f"{aviso.tipo+'s' if aviso.cantidad > 1 else aviso.tipo}",
+            "edad": aviso.edad,
+            "unidad_medida": plural_unidad(aviso.unidad_medida, aviso.edad),
             "foto": foto, # Obtener la primera foto (si existe)
             "alt": f"{aviso.cantidad} {aviso.tipo}(s)"
         })
+        print(plural_unidad(aviso.unidad_medida, aviso.edad))
     session.close()
+    
     return resultado
 
 def create_form_adopcion(
