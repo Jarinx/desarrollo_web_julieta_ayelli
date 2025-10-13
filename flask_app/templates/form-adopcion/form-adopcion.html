@@ -43,10 +43,15 @@
                                 </select>
                             </div>
                             <div>
-                            <label for="comuna" class="obligatorio">Comuna</label>
-                            <select id="comuna" name="comuna" required>
-                                <option value="">-- Selecciona comuna --</option>
-                            </select>
+                                <label for="comuna" class="obligatorio">Comuna</label>
+                                    <select id="comuna" name="comuna" required>
+                                        <option value="">-- Selecciona comuna --</option>
+                                        {% if comunas %}
+                                            {% for c in comunas %}
+                                                <option value="{{ c.id }}">{{ c.nombre }}</option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
                             </div>
                         </div>
                         <div>

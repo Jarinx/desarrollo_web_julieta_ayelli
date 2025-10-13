@@ -24,6 +24,7 @@ function cargarRegCom() {
          option.textContent = comuna.nombre;
          comunaSelect.appendChild(option);
      });
+     
      comunaSelect.disabled = false;
 });
 }

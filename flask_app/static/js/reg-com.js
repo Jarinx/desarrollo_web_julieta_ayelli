@@ -77,6 +77,13 @@ function getRegiones() {
     }));
 }
 function getComunas(regionId) {
-    const region = region_comuna.find(r => r.numero === regionId);
-    return region ? region.comunas : [];
+    const region = region_comuna.regiones.find(r => r.numero == regionId);
+    if (region) {
+        return region.comunas.map(comuna => ({
+            id: comuna.id,
+            nombre: comuna.nombre
+        }));
+    };
+    return ["No hay comunas disponibles"];
+
 }

@@ -29,7 +29,7 @@ def plural_unidad(unidad, edad):
     return unidad
 
 # --- DATABASE FUNCTIONS ---
-def get_avisos_adopcion(limit=5):
+def get_avisos_adopcion(limit):
     session = SessionLocal()
     avisos = (
         session.query(AvisoAdopcion)

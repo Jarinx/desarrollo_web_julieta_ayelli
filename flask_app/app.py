@@ -30,7 +30,7 @@ def change_un_edad(unidad):
 @app.route("/")
 @app.route("/portada")
 def portada():
-    avisos = db.get_avisos_adopcion()
+    avisos = db.get_avisos_adopcion(5)
     return render_template("portada/portada.html", avisos=avisos)
     
 # --- AVISO ADOPCION ---
