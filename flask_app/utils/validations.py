@@ -1,17 +1,17 @@
 import re
-import filetype
+import filetype # type: ignore
 from datetime import datetime, timedelta
 
 EMAIL_REGEX = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")  # patrón básico
 CEL_REGEX = re.compile(r"^\+\d{3}\.\d{8}$")  # +NNN.NNNNNNNN
 
 def validate_region(value):
-    return value and value > "0"
+    return value and value.isdigit() > 0
 
 def validate_comuna(value):
-    return value and value > "0"    
+    return value and value.isdigit() > 0
 
-def validate_sector(value):
+def validate_sector(value): #opcional
     if not value:
         return True
     return len(value) <= 100
@@ -22,8 +22,10 @@ def validate_nombre(value):
 def validate_email(value):
     return "@" in value and len(value) <= 100 and EMAIL_REGEX.match(value)
 
-def validate_celular(value):
-    return value and CEL_REGEX.match(value)
+def validate_celular(value): #opcional
+    if not value:
+        return True
+    return CEL_REGEX.match(value)
 
 def validate_tipo(value):
     if value:
@@ -44,22 +46,20 @@ def validate_fecha_entrega(value, now=None):
     dt = datetime.strptime(value, "%Y-%m-%dT%H:%M")
     return dt >= now + timedelta(hours=3)
         
-def validate_contactar_por(checked, value):
+def validate_contactar_por(checked): #opcional
     if (len(checked) > 5):
         return False
-    
-    for s in checked:
-        if len(value) < 4 or len(value) > 50:
-            return False
-        
+    # for c in checked:
+    #    if len(c.value) < 4 or len(c.value) > 50:
+    #        return False
     return True
 
 def validate_fotos(files):
     if not files or len(files) > 5 or len(files) < 1:
         return False
     
-    ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
-    ALLOWED_MIMETYPES = {"image/jpeg", "image/png"}
+    ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+    ALLOWED_MIMETYPES = {"image/jpeg", "image/png", "image/gif"}
 
     for foto in files:
         # check file extension
@@ -72,53 +72,45 @@ def validate_fotos(files):
 
     return True
 
-def validate_form(form_dict, files_dict):
-    errors = []
+def validate_form(form_array):
 
-    # ¿Dónde?
-    if not validate_region(form_dict.get("region")):
-        errors.append("Región: debes seleccionar una región.")
-    if not validate_comuna(form_dict.get("comuna")):
-        errors.append("Comuna: debes seleccionar una comuna.")
-    if not validate_sector(form_dict.get("sector")):
-        errors.append("Sector: el sector no puede exceder 100 caracteres.")
+    # ¿dónde?
+    region = form_array[0]
+    comuna = form_array[1]
+    # sector = form_array[2]
 
-    # Contacto
-    if not validate_nombre(form_dict.get("nombre")):
-        errors.append("Nombre: el nombre debe tener entre 3 y 200 caracteres.")
-    if not validate_email(form_dict.get("email")):
-        errors.append("Email: el email no tiene un formato válido o excede 100 caracteres.")
-    if not validate_celular(form_dict.get("celular")):
-        errors.append("Celular: el número de celular no tiene un formato válido.")
+    # ¿contacto?
+    nombre = form_array[3]
+    email = form_array[4]
+    celular = form_array[5]
+    contactar_por = form_array[6]
 
-    selected = form_dict.getlist("contactar_por") if hasattr(form_dict, "getlist") else form_dict.get("contactar_por", [])
-    ids_map = {}
-    for key in (selected or []):
-        ids_map[key.lower()] = (form_dict.get(f"contactar-{key}", "") or "").strip()
-    errors += validate_contactar_por(selected, ids_map)
+    # ¿mascota?
+    tipo = form_array[7]
+    cantidad = form_array[8]
+    edad = form_array[9]
+    unidad_medida = form_array[10]
+    fecha_entrega = form_array[11]
+    # descripcion = form_array[12]
+    #fotos = form_array[13]
 
-    # Mascota
-    if not validate_tipo(form_dict.get("tipo-mascota")):
-        errors.append("Tipo: debes seleccionar un tipo de mascota.")
-    if not validate_cantidad(form_dict.get("cantidad")):
-        errors.append("Cantidad: la cantidad de mascotas debe ser mínimo 1.")
-    if not validate_edad(form_dict.get("edad")):
-        errors.append("Edad: la edad debe ser mínimo 1.")
-    if not validate_unidad_medida(form_dict.get("unidad-edad")):
-        errors.append("Unidad de edad: debes seleccionar una unidad de edad.")
-    if not validate_fecha_entrega(form_dict.get("fecha-entrega")):
-        errors.append("Fecha disponible para entrega: debe tener formato válido y ser mayor a la fecha actual + 3 horas.")
+    valids = [
+        f"Region: {validate_region(region)}",
+        f"Comuna: {validate_comuna(comuna)}",
+        f"Nombre: {validate_nombre(nombre)}",
+        f"Email: {validate_email(email)}",
+        f"Celular: {validate_celular(celular)}",
+        #validate_contactar_por(contactar_por),
+        f"Tipo: {validate_tipo(tipo)}",
+        f"Cantidad: {validate_cantidad(cantidad)}",
+        f"Edad: {validate_edad(edad)}",
+        f"Unidad de medida: {validate_unidad_medida(unidad_medida)}",
+        f"Fecha de entrega: {validate_fecha_entrega(fecha_entrega, now=datetime.now())}"
+        #validate_fotos(fotos)
+    ]
 
-    # Fotos (buscamos múltiples nombres posibles)
-    files = []
-    if hasattr(files_dict, "getlist"):
-        files += files_dict.getlist("fotos")  # caso name="fotos"
-    # soporta foto-1, foto-2, ...
-    for k in getattr(files_dict, "keys", lambda: [])():
-        if str(k).startswith("foto"):
-            f = files_dict.get(k)
-            if f:
-                files.append(f)
-    errors += validate_fotos(files)
-
-    return (len(errors) == 0), errors
+    for v in valids:
+        if not v:
+            print("Validation failed:", v)
+            return False
+    return True

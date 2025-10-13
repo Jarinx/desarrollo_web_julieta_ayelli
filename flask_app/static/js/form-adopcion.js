@@ -211,6 +211,8 @@ function submitForm() {
 }
 
 function confirmarEnvio() {
+    let form = document.getElementById('form-adopcion');
+    form.submit();
     closeConfirm();
     document.getElementById('form-adopcion').classList.add('hidden');
     document.querySelector('#msg-aviso-recibido').style.display = 'block';

@@ -11,7 +11,7 @@ VALUES
  'Parque Bustamante',
  'Juana Pérez',
  'juana.perez@example.com',
- '+56 9 7777 7777',
+ '+569.77777777',
  'perro', 3, 3, 'm',
  '2025-09-03 10:30:00',
  '3 cachorros encontrados en el parque, sanos y juguetones.'
@@ -28,7 +28,7 @@ INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
 VALUES ('../../static/images/pets','puppy-3.jpg', @av1);
 
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
-VALUES ('whatsapp', '+56977777777', @av1);
+VALUES ('whatsapp', '+569.77777777', @av1);
 
 -- (2)
 INSERT INTO `tarea2`.`aviso_adopcion`
@@ -40,7 +40,7 @@ VALUES
  'Cenco Costanera',
  'Carlos Soto',
  'carlos.soto@example.com',
- '+56 9 8888 8888',
+ '+569.88888888',
  'perro', 3, 4, 'a',
  '2025-09-02 17:00:00',
  '3 perros adultos, dóciles y sociables.'
@@ -86,7 +86,7 @@ VALUES
   NULL,
  'Felipe Rivas',
  'felipe.rivas@example.com',
- '+56 9 5555 5555',
+ '+569.55555555',
  'gato', 1, 3, 'a',
  '2025-09-02 11:11:00',
  NULL
@@ -120,7 +120,7 @@ INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
 VALUES ('../../static/images/pets','puppy-pasto.jpg', @av5);
 
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
-VALUES ('whatsapp', '+56944444444', @av5);
+VALUES ('whatsapp', '+569.44444444', @av5);
 
 -- (6)
 INSERT INTO `tarea2`.`aviso_adopcion`
@@ -132,7 +132,7 @@ VALUES
   NULL,
  'Javiera Rojas',
  'javiera.rojas@example.com',
-  '+56 9 1234 1234',
+  '+569.12341234',
  'gato', 1, 5, 'a',
  '2025-08-30 12:00:00',
   NULL
@@ -143,7 +143,7 @@ INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
 VALUES ('../../static/images/pets','gato-5-annos.jpg', @av6);
 
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
-VALUES ('whatsapp', '+56944444444', @av6);
+VALUES ('whatsapp', '+569.44444444', @av6);
 
 -- COMMIT
 COMMIT;

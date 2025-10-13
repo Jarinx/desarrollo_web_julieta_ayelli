@@ -26,7 +26,7 @@
                 </div>
 
                 <!-- Formulario -->
-                <form id="form-adopcion" enctype="multipart/form-data">
+                <form id="form-adopcion" action="{{url_for('post_aviso_adopcion')}}" method="post" enctype="multipart/form-data">
                     <!-- ¿donde? -->
                     <fieldset>
                         <legend>¿Dónde?:</legend>

@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from database.models import Base, AvisoAdopcion, Foto, Comuna, Region, ContactarPor
 
 DB_NAME = "tarea2"
@@ -51,10 +52,15 @@ def get_avisos_adopcion(limit):
             "foto": foto, # Obtener la primera foto (si existe)
             "alt": f"{aviso.cantidad} {aviso.tipo}(s)"
         })
-        print(plural_unidad(aviso.unidad_medida, aviso.edad))
     session.close()
     
     return resultado
+
+def get_comuna_id_by_name(comuna):
+    session = SessionLocal()
+    comuna_id = session.query(Comuna.id).filter(Comuna.nombre == comuna).first()
+    session.close()
+    return comuna_id
 
 def create_form_adopcion(
         fecha_ingreso,
@@ -68,51 +74,29 @@ def create_form_adopcion(
         edad,
         unidad_medida,
         fecha_entrega,
-        descripcion,
-        contactos,
-        fotos):
+        descripcion):
     
-    allowed_contactos = {'whatsapp', 'telegram', 'x', 'instagram', 'tiktok', 'otra'}
+    allowed_contactos = {'whatsapp', 'telegram', 'X', 'instagram', 'tiktok', 'otra'}
 
+    new_aviso = AvisoAdopcion(fecha_ingreso=fecha_ingreso,
+                                comuna_id=comuna_id,
+                                sector=sector,
+                                nombre=nombre,
+                                email=email,
+                                celular=celular,
+                                tipo=tipo,
+                                cantidad=cantidad,
+                                edad=edad,
+                                unidad_medida=unidad_medida,
+                                fecha_entrega=fecha_entrega,
+                                descripcion=descripcion)
     session = SessionLocal()
-
-    new_aviso = AvisoAdopcion(
-        fecha_ingreso=fecha_ingreso,
-        comuna_id=comuna_id,
-        sector=sector,
-        nombre=nombre,
-        email=email,
-        celular=celular,
-        tipo=tipo,
-        cantidad=cantidad,
-        edad=edad,
-        unidad_medida=unidad_medida,
-        fecha_entrega=fecha_entrega,
-        descripcion=descripcion)
-    
     session.add(new_aviso)
-    session.commit()  
+    session.commit()
+    session.close()
+    print("Creando aviso:", new_aviso)
 
-    for contacto in contactos:
-        nombre = contacto.get("nombre").lower()
-        ident = contacto.get("identificador", None).strip()
-        if nombre in allowed_contactos and ident:
-            new_contacto = ContactarPor(
-                nombre=nombre,
-                identificador=ident,
-                aviso_id=new_aviso.id
-            )
-            session.add(new_contacto)
-
-    for foto in fotos:
-        ruta_archivo = foto.get("ruta_archivo")
-        nombre_archivo = foto.get("nombre_archivo")
-        if ruta_archivo and nombre_archivo:
-            new_foto = Foto(
-                ruta_archivo=ruta_archivo,
-                nombre_archivo=nombre_archivo,
-                aviso_id=new_aviso.id
-            )
-            session.add(new_foto)
 
     return new_aviso.id
+
+    
