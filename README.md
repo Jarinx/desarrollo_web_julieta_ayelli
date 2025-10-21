@@ -1,18 +1,17 @@
 **Branches 'Tarea n' (n = {1, 2...})**: para las tareas
 
-**Consideraciones Tarea 1:**
+# Consideraciones generales:
 - En zonas donde se pedía tener el link a la portada al final de la página, lo cambié para que estuviera en el header, ya que se me hacía más intuitivo y visualmente estético.
-- Con respecto a los CSS: tengo el `theme.css`, donde separé todas las características generales de la aplicación para mantener coherencia entre las páginas. Luego, para cada CSS específico, puse reglas específicas a esa página.
-- No hay Javascript para *portada* ni *estadísticas*, ya que no fue necesario.
-- Los colores quedaron un poco oscuros, pero esto se corregirá para la próxima iteración.
 
-## Consideraciones Tarea 2:
-### Ambiente:
-1. Instalar dependencias (desde root del repo): `pip install -r requirements.txt`
-2. Actualizar dependencias: `pip freeze > requirements.txt`
+# Instrucciones generales:
+Para correr la app correctamente, seguir en orden los pasos detallados a continuación.
+### Ambiente (hacer lo siguiente desde root del repo):
+1. Crear venv: `python -m venv .venv`
+2. Activar venv: `.\.venv\Scripts\activate`
+3. Instalar dependencias: `pip install -r requirements.txt`
 
 ### Inicializar server
-Si se empieza desde el server vacío (no está creada la db 'tarea2' y tampoco el user 'cc5002'), ejecutar en la terminal de PowerShell en el siguiente orden:
+Si se empieza desde el server vacío (no está creada la db 'tarea2' y tampoco el user 'cc5002'), ejecutar en la terminal (yo lo hice en Windows PowerShell):
 
 **1. Conectarse con user root:** `mysql -uroot -p`
 
@@ -53,5 +52,5 @@ WHERE nombre = "Lo Barrenechea";
 **7. Salir:** `exit`
 
 ### Correr app:
-Ejecutar en terminal de PowerShell (desde root del repo): `.\run_app.bat`
+Ejecutar en terminal: `.\run_app.bat`
 
