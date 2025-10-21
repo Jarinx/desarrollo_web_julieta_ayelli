@@ -7,39 +7,51 @@
 - Los colores quedaron un poco oscuros, pero esto se corregirá para la próxima iteración.
 
 ## Consideraciones Tarea 2:
-Si se empieza desde el server vacío (no está creada la db 'tarea2' y tampoco el user 'cc5002'), ejecutar en PowerShell, en el siguiente orden:
+### Ambiente:
+1. Instalar dependencias (desde root del repo): `pip install -r requirements.txt`
+2. Actualizar dependencias: `pip freeze > requirements.txt`
 
-```bash
-# --- CONECTARSE CON ROOT ---
-$ mysql -uroot -p
+### Inicializar server
+Si se empieza desde el server vacío (no está creada la db 'tarea2' y tampoco el user 'cc5002'), ejecutar en la terminal de PowerShell en el siguiente orden:
 
-# --- USER ---
-$ CREATE USER 'cc5002'@'localhost' IDENTIFIED BY 'programacionweb';
+**1. Conectarse con user root:** `mysql -uroot -p`
 
-$ GRANT ALL PRIVILEGES ON tarea2.* TO 'cc5002'@'localhost';
+**2. Crear user *cc5002*:**
 
-$ FLUSH PRIVILEGES; # para guardar cambios
+```sql
+CREATE USER 'cc5002'@'localhost' IDENTIFIED BY 'programacionweb';
 
-$ SHOW GRANTS FOR 'cc5002'@'localhost'; # Para verificar que 'cc5002' tiene los privilegios
+GRANT ALL PRIVILEGES ON tarea2.* TO 'cc5002'@'localhost';
 
-$ exit
+FLUSH PRIVILEGES; -- para guardar cambios
 
-# --- DB ---
-$ cmd /c "mysql -ucc5002 -p < tarea2.sql" # Ejecutar tarea2.sql
+SHOW GRANTS FOR 'cc5002'@'localhost'; -- para verificar que 'cc5002' tiene los privilegios
+```
 
-$ cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < region-comuna.sql" # Ejecutar region-comuna.sql
+**3. Salir:** `exit`
 
-$ cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < data-invent.sql" # Ejecutar data-invent.sql
+**4. Crear la db *tarea2*:**
 
-$ mysql -ucc5002 -p tarea2
+```powershell
+cmd /c "mysql -ucc5002 -p < tarea2.sql" # ejecuta tarea2.sql
 
-# ya dentro de la db, ejecutar la query:
+cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < region-comuna.sql" # ejecuta region-comuna.sql
+
+cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < data-invent.sql" # ejecuta data-invent.sql
+```
+
+**5. Entrar a db *tarea2* con user *cc5002*:** `mysql -ucc5002 -p tarea2`
+
+**6. Corregir datos:**
+
+```sql
 UPDATE comuna
 SET nombre = "Lo Barnechea"
 WHERE nombre = "Lo Barrenechea";
 ```
 
-**Para correr la app con 1 solo comando (estando dentro de carpeta 'flask_app'):**
-```bash
-.\run_app.bat
-``` 
+**7. Salir:** `exit`
+
+### Correr app:
+Ejecutar en terminal de PowerShell (desde root del repo): `.\run_app.bat`
+
