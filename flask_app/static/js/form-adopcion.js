@@ -1,6 +1,8 @@
 // Lógica del formulario de adopción
 // *Requiere reg-com.js*
 
+const form = document.getElementById('form-adopcion');
+
 /* (1) PRESENTACIÓN
 /* --- REGIONES Y COMUNAS --- */
 let regionSelect = document.getElementById('region');
@@ -42,44 +44,106 @@ function prefillFecha() {
 }
 
 /* --- CONTACTAR-POR CHECKBOXES --- */
-function contactarMulti() {
-    let contactarChecked = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
-    let contactarUnchecked = Array.from(document.querySelectorAll('input[type="checkbox"]:not(:checked)'));
+// function contactarMulti() {
+//     let checked = Array.from(document.querySelectorAll('#contactar_por input[type="checkbox"]:checked'));
+//     let unchecked = Array.from(document.querySelectorAll('#contactar_por input[type="checkbox"]:not(:checked)'));
 
-    // validación: máximo 5 opciones
-    if (contactarChecked.length > 5) {
-        alert("Solo puedes colocar 5 opciones de contacto.");
-        this.checked = false;
-        return;
-    }
+//     // validación: máximo 5 opciones
+//     if (checked.length > 5) {
+//         alert("Solo puedes colocar 5 opciones de contacto.");
+//         this.checked = false;
+//         return;
+//     }
 
-    const wrap = document.getElementById('contactar-ids');
-    // red unchecked => eliminar  
-    contactarUnchecked.forEach(cb => {
-        const value = cb.value;
-        const id = `contactar-${value}`;
-        const existingInput = document.getElementById(id);
-        if (existingInput) {
-            existingInput.parentElement.remove();
-        }
-    });
-    // red checked => agregar
-    contactarChecked.forEach(cb => {
-        const red = cb.parentElement.textContent;
-        const value = cb.value;
-        const label = `${red} (ID o URL)`;
-        const id = `contactar-${value}`;
-        // solo agregar si no fue checked antes
-        if (!document.getElementById(id)) {
-            const div = document.createElement('div');
-            div.innerHTML = `
-                <label for="${id}">${label}:</label>
-                <input type="text" id="${id}" name="${id}" minlength="4" maxlength="50">
-            `;
-            wrap.appendChild(div);
-        }
+//     // red unchecked => eliminar  
+//     unchecked.forEach(cb => {
+//         const id = `contactar-${cb.value}`;
+//         const existingInput = document.getElementById(id);
+//         if (existingInput) {
+//             existingInput.remove();
+//         }
+//     });
+
+//     // red checked => agregar
+//     checked.forEach(cb => {
+//         const value = cb.value;
+//         const id = `contactar-${value}`;
+//         const wrap = cb.parentElement;
+//         // solo agregar si no fue checked antes
+//         if (!document.getElementById(id)) {
+//             const input = document.createElement('input');
+//             input.type = 'text';
+//             input.id = id;
+//             input.name = id;
+//             input.minlength = 4;
+//             input.maxlength = 50;
+//             wrap.appendChild(input);
+//         }
+//     });
+// }
+/* --- CONTACTAR-POR CHECKBOXES (robusto con delegación) --- */
+function crearInputIdentificador(val, labelText) {
+  const id = `contactar-${val}`;                 // <-- lo que espera Flask: form.get(f"contactar-{nombre}")
+  if (document.getElementById(id)) return;       // no duplicar
+
+  // el input va junto al <label> que contiene el checkbox
+  // buscamos el <label> padre del checkbox con ese value
+  const cb = document.querySelector(`#contactar-por input[type="checkbox"][value="${val}"]`);
+  if (!cb) return;
+  const wrap = cb.parentElement;
+
+  const inp = document.createElement('input');
+  inp.type = 'text';
+  inp.id = id;
+  inp.name = id;                                  // <-- coincide con Flask
+  inp.minLength = 4;
+  inp.maxLength = 50;
+  inp.placeholder = `${labelText} (ID o URL)`;
+  wrap.appendChild(inp);
+}
+
+function eliminarInputIdentificador(val) {
+  const id = `contactar-${val}`;                  // <-- igual que arriba
+  const existing = document.getElementById(id);
+  if (existing) existing.remove();
+}
+
+function contactarInit() {
+  // Si algunos vienen marcados (por Jinja al volver de error), dibuja sus inputs:
+  document.querySelectorAll('#contactar-por input[type="checkbox"]:checked')
+    .forEach(cb => {
+      const labelText = cb.parentElement.textContent.trim();
+      crearInputIdentificador(cb.value, labelText);
     });
 }
+
+function contactarDelegadoChange(e) {
+  const cont = document.getElementById('contactar-por');
+  if (!cont) return;
+
+  // Solo reaccionar a cambios en checkboxes internos
+  const target = e.target;
+  if (!(target && target.matches('input[type="checkbox"]'))) return;
+
+  const max = parseInt(cont.dataset.max || '5', 10);
+  const checked = cont.querySelectorAll('input[type="checkbox"]:checked');
+
+  // Enforce máximo
+  if (checked.length > max) {
+    target.checked = false; // revertimos el último click
+    alert(`Solo puedes seleccionar hasta ${max} opciones de contacto.`);
+    return;
+  }
+
+  // Crear/eliminar input de identificador al lado
+  const labelText = target.parentElement.textContent.trim();
+  if (target.checked) {
+    crearInputIdentificador(target.value, labelText);
+  } else {
+    eliminarInputIdentificador(target.value);
+  }
+}
+
 
 /* --- FOTOS --- */
 function agregarFoto() {
@@ -91,10 +155,11 @@ function agregarFoto() {
     }
     const input = document.createElement('input');
     input.type = 'file';
-    input.name = `foto-${fotoCount + 1}`;
+    input.name = 'fotos';
     wrap.appendChild(input);
     actualizarBotonesEliminarFoto();
 }
+
 function eliminarFoto(index) {
     const wrap = document.querySelector('#fotos');
     const inputs = wrap.querySelectorAll('input[type="file"]');
@@ -162,7 +227,7 @@ function validarForm() {
     });
 
     /* -- ¿MASCOTA? -- */
-    let tipo = document.querySelectorAll('input[for="tipo-mascota"]:checked');
+    let tipo = document.querySelector('input[name="tipo-mascota"]:checked');
     if (!tipo) errors.push("Tipo: debes seleccionar un tipo de mascota.");
     let cantidad = document.getElementById('cantidad').value;
     if (!cantidad || isNaN(cantidad) || cantidad < 1) {
@@ -172,7 +237,7 @@ function validarForm() {
     if (!edad || isNaN(edad) || edad < 1) {
         errors.push("Edad: la edad debe ser mínimo 1.");
     }
-    let unidad = document.querySelectorAll('input[for="unidad-edad"]:checked');
+    let unidad = document.querySelector('input[name="unidad-edad"]:checked');
     if (!unidad) errors.push("Unidad de edad: debes seleccionar una unidad de edad.");
     let fechaEntrega = document.getElementById('fecha-entrega').value;
     if (!fechaEntrega) errors.push("Fecha disponible para entrega: debes seleccionar una fecha y hora de entrega.");
@@ -199,8 +264,8 @@ function openConfirm() {
 function closeConfirm() {
     document.getElementById('modal-confirm').style.display = 'none';
 }
-
-function submitForm() {
+// botón "Agregar este aviso de adopción"
+function onFormSubmit() {
     const errors = validarForm();
     if (errors.length) {
         mostrarErrores(errors);
@@ -209,16 +274,15 @@ function submitForm() {
     mostrarErrores([]); // limpiar errores previos
     openConfirm();
 }
-
+// modal confirmación: botón "Sí, estoy seguro" (el submit real)
 function confirmarEnvio() {
-    let form = document.getElementById('form-adopcion');
-    form.submit();
     closeConfirm();
-    document.getElementById('form-adopcion').classList.add('hidden');
-    document.querySelector('#msg-aviso-recibido').style.display = 'block';
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    form.submit();
+    // document.getElementById('form-adopcion').classList.add('hidden');
+    // document.querySelector('#msg-aviso-recibido').style.display = 'block';
+    // window.scrollTo({top: 0, behavior: 'smooth'});
 }
-
+// modal confirmación: botón "No, no estoy seguro, quiero volver al formulario"
 function cancelarEnvio() {
     closeConfirm();
 }
@@ -228,9 +292,17 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarRegCom();
     prefillFecha();
     actualizarBotonesEliminarFoto();
-    Array.from(document.querySelectorAll('input[type="checkbox"]')).forEach(cb => cb.addEventListener('change', contactarMulti));
+    // Contactar por:
+    // Array.from(document.querySelectorAll('#contactar-por input[type="checkbox"]')).forEach(cb =>
+    //     cb.addEventListener('change', contactarMulti));
+     contactarInit();
+    const cont = document.getElementById('contactar-por');
+    if (cont) cont.addEventListener('change', contactarDelegadoChange);
+    // Fotos:
     document.querySelector('#btn-agregar-foto').addEventListener('click', agregarFoto);
-    document.getElementById('btn-enviar').addEventListener('click', submitForm);
+    // Botón "Agregar este aviso de adopción":
+    form?.addEventListener('submit', onFormSubmit);
+    // Modal confirmación:
     document.getElementById('btn-confirm-si').addEventListener('click', confirmarEnvio);
     document.getElementById('btn-confirm-no').addEventListener('click', cancelarEnvio);
     document.addEventListener('keydown', (e) => {

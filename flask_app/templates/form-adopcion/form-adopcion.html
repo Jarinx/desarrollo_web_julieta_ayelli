@@ -20,13 +20,20 @@
 
         <main>
             <div class="card">
-                <div id="error-box" role="alert" aria-live="assertive">
-                 <strong>Por favor, corrija los siguientes errores:</strong>
-                 <ul id="error-list"></ul>
-                </div>
+                <!-- Error -->
+                {% if errores %}
+                    <div class="error-box">
+                    <strong>Por favor, corrija el error en:</strong>
+                    <ul>
+                    {% for error in errores %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                    </div>
+                {% endif %}
 
                 <!-- Formulario -->
-                <form id="form-adopcion" action="{{url_for('post_aviso_adopcion')}}" method="post" enctype="multipart/form-data">
+                <form id="form-adopcion" class="{{ 'hidden' if submitted else '' }}" action="{{url_for('post_aviso_adopcion')}}" method="post" enctype="multipart/form-data">
                     <!-- ¿donde? -->
                     <fieldset>
                         <legend>¿Dónde?:</legend>
@@ -56,7 +63,7 @@
                         </div>
                         <div>
                             <label for="sector">Sector (opcional)</label>
-                            <input type="text" id="sector" name="sector" maxlength="100" placeholder="Ej: Beauchef 850, terraza"><br>
+                            <input type="text" id="sector" name="sector" maxlength="100" placeholder="Ej: Beauchef 850, terraza" value="{{ form_array[2] or '' }}" ><br>
                             <small class="hint">Máximo 100 caracteres</small>
                         </div>
                     </fieldset>
@@ -66,32 +73,51 @@
                     <legend>¿Contacto de esta publicación?</legend>
                         <div>
                             <label for="nombre" class="obligatorio">Nombre</label>
-                            <input type="text" id="nombre" name="nombre" minlength="3" maxlength="200" placeholder="Ej: Juan Pérez"><br>
+                            <input type="text" id="nombre" name="nombre" minlength="3" maxlength="200" placeholder="Ej: Juan Pérez" value="{{ form_array[3] or '' }}" required><br>
                             <small class="hint">Mínimo 3 y máximo 100 caracteres</small>
                         </div>
                         <div>
                             <label for="email" class="obligatorio">Email</label>
-                            <input type="email" id="email" name="email" maxlength="100" placeholder="Ej: hola@gmail.com">
+                            <input type="email" id="email" name="email" maxlength="100" placeholder="Ej: hola@gmail.com" value="{{ form_array[4] or '' }}" required>
                         </div>
                         <div>
                             <label for="celular">Celular (opcional)</label>
-                            <input type="tel" id="celular" name="celular" maxlength="13" placeholder="Ej: +569.12345678"><br>
+                            <input type="tel" id="celular" name="celular" maxlength="13" placeholder="Ej: +569.12345678" value="{{ form_array[5] or '' }}"><br>
                             <small class="hint">Formato válido: +NNN.NNNNNNNN</small>
                         </div>
                         <div>
                             <label for="contactar-por">Contactar por (opcional)</label>
                             <small class="hint">Máximo 5 opciones</small>
-                            <div id="contactar-por" class="row cols-3">
-                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="whatsapp">WhatsApp</label>
-                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="telegram">Telegram</label>
-                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="X">X</label>
-                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="instagram">Instagram</label>
-                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="tiktok">TikTok</label>
-                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="otra">Otra</label>
+                            <div id="contactar-por" class="row cols-2" data-max="5">
+                                <!-- <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="whatsapp">WhatsApp  </label>
+                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="telegram">Telegram  </label>
+                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="X">X  </label>
+                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="instagram">Instagram  </label>
+                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="tiktok">TikTok  </label>
+                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="otra">Otra  </label> -->
+                                {% for value, label in contact_methods %}
+                                    {% set checked = contactar_por_select and (value in contactar_por_select) %}
+                                    <label>
+                                    <input
+                                        type="checkbox"
+                                        name="contactar-por"
+                                        value="{{ value }}"
+                                        {% if checked %}checked{% endif %}>
+                                    {{ label }}
+                                    {% if checked %}
+                                        <input
+                                        type="text"
+                                        id="contactar-{{ value }}"
+                                        name="contactar-{{ value }}"
+                                        minlength="4"
+                                        maxlength="50"
+                                        value="{{ contactar_ids.get(value, '') }}">
+                                    {% endif %}
+                                    </label>
+                                {% endfor %}
                             </div>
                             
                         </div>
-                        <div id="contactar-ids"></div>
                     </fieldset>
 
                     <!-- ¿mascota? -->
@@ -100,50 +126,57 @@
                     <div class="row cols-2">
                         <div>
                             <label for="tipo-mascota" class="obligatorio">Tipo de mascota</label>
-                            <input type="radio" id="tipo-mascota-perro" name="tipo-mascota" value="perro">Perro
-                            <input type="radio" id="tipo-mascota-gato" name="tipo-mascota" value="gato">Gato
+                            <input type="radio" id="tipo-mascota-perro" name="tipo-mascota" value="perro" {% if form_array[7] == 'perro' %}checked{% endif %} required>Perro
+                            <input type="radio" id="tipo-mascota-gato" name="tipo-mascota" value="gato" {% if form_array[7] == 'gato' %}checked{% endif %} required>Gato
                         </div>
                         <div>
                             <label for="cantidad" class="obligatorio">Cantidad</label>
-                            <input type="number" id="cantidad" name="cantidad" min="1" placeholder="Ej: 3" required> 
+                            <input type="number" id="cantidad" name="cantidad" min="1" placeholder="Ej: 3" value="{{ form_array[8] or '' }}" required> 
                         </div>
                     </div>
                     <div class="row cols-2">
                         <div>
                             <label for="edad" class="obligatorio">Edad</label>
-                            <input type="number" id="edad" name="edad" min="1" placeholder="Ej: 2" required>
+                            <input type="number" id="edad" name="edad" min="1" placeholder="Ej: 2" value="{{ form_array[9] or '' }}" required>
                         </div>
                         <div>
                             <label for="unidad-edad" class="obligatorio">Unidad de edad</label>
-                            <input type="radio" id="unidad-edad-anios" name="unidad-edad" value="a">Años
-                            <input type="radio" id="unidad-edad-meses" name="unidad-edad" value="m">Meses
+                            <input type="radio" id="unidad-edad-anios" name="unidad-edad" value="a" {% if form_array[10] == 'a' %}checked{% endif %} required>Años
+                            <input type="radio" id="unidad-edad-meses" name="unidad-edad" value="m" {% if form_array[10] == 'm' %}checked{% endif %} required>Meses
                         </div>
                     </div>
                         
                         <div>
                             <label for="fecha-entrega" class="obligatorio">Fecha disponible para entrega</label>
-                            <input type="datetime-local" id="fecha-entrega" name="fecha-entrega">
+                            <input type="datetime-local" id="fecha-entrega" name="fecha-entrega" min="{{ entrega_min }}"
+                                value="{% if form_array and form_array[11] and form_array[11] >= entrega_min %}
+                                            {{ form_array[11] }}
+                                        {% else %}
+                                            {{ entrega_min }}
+                                        {% endif %}" required>
                         </div>
                         <div>
                             <label for="descripcion">Descripción (opcional)</label>
-                            <textarea id="descripcion" name="descripcion" cols="50" rows="10" placeholder="Ej: Es un perro muy juguetón y cariñoso."></textarea>
+                            <textarea id="descripcion" name="descripcion" cols="50" rows="10" placeholder="Ej: Es un perro muy juguetón y cariñoso.">{{ form_array[12] or '' }}</textarea>
                         </div>
-                        <div class="card obligatorio" style="margin-top:12px">Fotos <small class="hint">Mínimo 1 y máximo 5 imágenes. Formatos permitidos: png, jpg, jpeg, gif</small>
-                            <div id="fotos">
-                                <input type="file" name="foto-1">
-                            </div>
+                        <div>
+                            <label for="fotos" class="obligatorio">Fotos</label>
+                            <small class="hint">Mínimo 1 y máximo 5 imágenes. Formatos permitidos: png, jpg, jpeg, gif</small>
+                                <div id="fotos" style="margin-top:5px">
+                                <input type="file" name="fotos" required>
+                                </div>
                             <div>
                                 <button type="button" id="btn-agregar-foto" class="btn ghost" style="margin-top:8px">+ Agregar otra foto</button>
                             </div>
                         </div>
                     </fieldset>
                     <div class="chips">
-                        <button type="button" id="btn-enviar" class="btn primary">Agregar este aviso de adopción</button>
+                        <button type="submit" id="btn-enviar" class="btn primary">Agregar este aviso de adopción</button>
                     </div>
                 </form>
 
                 <!-- Mensaje aviso recibido -->
-                <div id="msg-aviso-recibido">
+                <div id="msg-aviso-recibido" class="{{ 'block' if submitted else 'hidden' }}">
                     <h2>Hemos recibido la información de adopción, muchas gracias y suerte!</h2>
                     <a href="{{ url_for('portada') }}" class="btn primary">Volver a la portada</a>
                 </div>

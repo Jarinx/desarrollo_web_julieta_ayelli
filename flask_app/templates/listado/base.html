@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}PxF{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+  {% block css %}{% endblock %}
+  <style>
+    /* helpers comunes */
+    tr.clickable { cursor: pointer; }
+    .pager { display:flex; gap:.5rem; align-items:center; justify-content:center; margin-top:12px; }
+    .pager .btn[aria-disabled="true"] { opacity:.5; pointer-events:none; }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+      <a href="{{ url_for('portada') }}" class="back-link">⟵ Volver a la portada</a>
+      {% block header %}
+      <h1>PetxFamily</h1>
+      {% endblock %}
+  </header>
+
+  <!-- Main -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -40,12 +40,12 @@
             <tbody>
                 {% for aviso in avisos %}
                 <tr>
-                    <td>{{ aviso.fecha }}</td>
+                    <td>{{ aviso.fecha_ingreso }}</td>
                     <td>{{ aviso.comuna }}</td>
                     <td>{{ aviso.sector }}</td>
                     <td>{{ aviso.cantidad }} {{ aviso.tipo }}<br>{{ aviso.edad }} {{ aviso.unidad_medida }}</td>
                     <td>
-                        <img class="pet-foto-list" src="../../static/uploads/pets/{{ aviso.foto }}" alt="{{ aviso.alt }}">
+                        <img class="pet-foto-list" src=" {{ aviso.fotos[0].src }}" alt="{{ aviso.fotos[0].alt }}">
                     </td>
                 </tr>
                 {% endfor %}

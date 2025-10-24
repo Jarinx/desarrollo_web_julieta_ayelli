@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" >
-  <title>PxF - Listado de adopciones</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" >
-  <link rel="stylesheet" href="../css/theme.css" >
-  <link rel="stylesheet" href="../css/listado.css" >
-</head>
-<body>
+{% extends 'listado/base.html' %}
 
-  <!-- Header -->
-  <header>
-    <a href="portada.html" class="back-link">⟵ Volver a la portada</a>
-    <h1>Listado de Avisos de Adopción</h1>
-    <h2>Haz clic en cualquier fila para ver el detalle</h2>
-  </header>
+{% block title %}PxF - Listado de avisos{% endblock %}
 
-  <main>
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/listado.css') }}" >
+{% endblock %}
+
+<!-- Header -->
+{% block header %}
+<h1>Listado de Avisos de Adopción</h1>
+<h2>Haz clic en cualquier fila para ver el detalle</h2>
+{% endblock %}
+
+<!-- Main -->
+{% block content %}
     <!-- Listado -->
     <section id="lista" class="card">
       <table id="tabla-avisos" class="table--verticals">
@@ -32,117 +29,43 @@
             <th>Total fotos</th>
           </tr>
         </thead>
-        <tbody onclick="mostrarDetalle()">
-          <tr id="aviso-barnechea">
-            <td>2025-08-31 19:20</td>
-            <td>2025-09-03 16:00</td>
-            <td>Lo Barnechea</td>
-            <td>Santuario Del Valle</td>
-            <td>1 perro<br>2 meses</td>
-            <td>Ana Rivas<br>ana@example.com</td>
-            <td>1</td>
-          </tr> 
-          <tr>
-            <td>2025-09-02 15:45</td>
-            <td>2025-09-04 18:00</td>
-            <td>Las Condes</td>
-            <td>Escuela Militar</td>
-            <td>1 gato<br>3 meses</td>
-            <td>Carla Díaz<br>carla@example.com</td>
-            <td>2</td>
-          </tr>
-          <tr>
-            <td>2025-09-02 17:00</td>
-            <td>2025-09-05 09:30</td>
-            <td>Providencia</td>
-            <td>Cenco Costanera</td>
-            <td>3 perros<br>4 años</td>
-            <td>Juan Pérez<br>juan@example.com</td>
-            <td>2</td>
-          </tr>
-          <tr>
-            <td>2025-09-03 10:30</td>
-            <td>2025-09-06 12:00</td>
-            <td>Providencia</td>
-            <td>Parque Bustamante</td>
-            <td>7 perros<br>1 mes</td>
-            <td>María López<br>maria@example.com</td>
-            <td>5</td>
-          </tr>
-          <tr>
-            <td>2025-09-02 11:11</td>
-            <td>2025-09-07 11:00</td>
-            <td>Las Condes</td>
-            <td>Mallplaza Los Dominicos</td>
-            <td>1 gato<br>3 años</td>
-            <td>Luis Soto<br>luis@example.com</td>
-            <td>4</td>
-          </tr>
+        <tbody>
+          {% if avisos %}
+            {% for aviso in avisos %}
+              <tr class="clickable"
+              data-href="{{ url_for('aviso_detalle', aviso_id=aviso.aviso_id) }}">
+                <td>{{ aviso.fecha_ingreso }}</td>
+                <td>{{ aviso.fecha_entrega }}</td>
+                <td>{{ aviso.comuna }}</td>
+                <td>{{ aviso.sector }}</td>
+                <td>{{ aviso.cantidad }} {{ aviso.tipo }}<br>{{ aviso.edad }} {{ aviso.unidad_medida }}</td>
+                <td>{{ aviso.nombre }}<br>{{ aviso.email }}</td>
+                <td>{{ aviso.total_fotos }}</td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr><td colspan="7">No hay avisos para mostrar.</td></tr>
+          {% endif %}
         </tbody>
       </table>
+      <!-- Paginación -->
+      <nav class="pager" aria-label="Paginación">
+        <a class="btn" aria-disabled="{{ 'true' if not has_prev else 'false' }}"
+          href="{{ url_for('listado', pag=pag-1) if has_prev else '#' }}">← Anterior</a>
+        <span>Página {{ pag }} de {{ total_paginas }}</span>
+        <a class="btn" aria-disabled="{{ 'true' if not has_next else 'false' }}"
+          href="{{ url_for('listado', pag=pag+1) if has_next else '#' }}">Siguiente →</a>
+      </nav>
     </section>
+{% endblock %}
 
-    <!-- Detalle completo -->
-    <section id="detalle" class="card hidden" aria-live="polite">
-      <div class="det-header">
-        <h3>Detalle del aviso — Lo Barnechea · Santuario Del Valle</h3>
-      </div>
-
-      <div class="det-grid">
-        <div>
-          <h4>¿Dónde?</h4>
-          <ul>
-            <li><strong>Región:</strong> Región Metropolitana</li>
-            <li><strong>Comuna:</strong> Lo Barnechea</li>
-            <li><strong>Sector:</strong> Santuario Del Valle</li>
-          </ul>
-        </div>
-        <div>
-          <h4>¿Contacto de esta publicación?</h4>
-          <ul>
-            <li><strong>Nombre:</strong> Ana Rivas</li>
-            <li><strong>Email:</strong> ana@example.com</li>
-          </ul>
-        </div>
-        <div>
-          <h4>¿Qué mascota ofrece en adopción?</h4>
-          <ul>
-            <li><strong>Tipo:</strong> Perro</li>
-            <li><strong>Cantidad:</strong> 1</li>
-            <li><strong>Edad:</strong> 2</li>
-            <li><strong>Unidad de edad:</strong> Meses</li>
-            <li><strong>Fecha de entrega:</strong> 2025-09-03 16:00</li>
-          </ul>
-        </div>
-      </div>
-
-      <div>
-        <h4>Fotos (320×240)</h4>
-        <div id="detFotos" class="fotos-grid">
-          <img src="../images/pets/puppy-pasto.jpg" alt="1 cachorro" class="foto-thumb" >
-        </div>
-      </div>
-      <br>
-      <div class="det-actions">
-          <a href="#" id="volverListado" class="btn">← Volver al listado</a>
-          <a href="portada.html" class="btn primary">Volver a la portada</a>
-        </div>
-    </section>
-  </main>
-
-  <!-- Modal de imagen (800x600) -->
-  <div id="imgModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="imgTitle">
-    <div class="modal">
-      <div class="modal-head">
-        <h5 id="imgTitle">Foto 800×600</h5>
-        <button class="btn" id="cerrarModal">Cerrar ✕</button>
-      </div>
-      <div class="modal-body">
-        <img src="../images/pets/puppy-pasto.jpg" id="imgGrande" alt="Foto ampliada 800x600">
-      </div>
-    </div>
-  </div>
-
-  <script src="../js/listado.js"></script>
-</body>
-</html>
+{% block scripts %}
+<script>
+document.addEventListener('click', (e) => {
+  const row = e.target.closest('tr.clickable');
+  if (!row) return;
+  const href = row.dataset.href;
+  if (href) window.location = href;
+});
+</script>
+{% endblock %}

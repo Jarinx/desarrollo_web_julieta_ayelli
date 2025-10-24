@@ -123,7 +123,7 @@ input[type="tel"],
 input[type="number"],
 input[type="datetime-local"],
 select, textarea{
-  width:70%; padding:10px;
+  width:50%; padding:5px;
   border-radius:var(--r-sm); border:1px solid #de6f9a;
   background:#ffffff; color:var(--ink);
 }
@@ -135,8 +135,8 @@ small.hint{ color:var(--muted); }
 
 /* Bloques de error y validación */
 #error-list{ margin:0 0 10px; padding-left:18px; }
-#error-box{
-  display:none; border-left:4px solid var(--error);
+.error-box{
+  border-left:4px solid var(--error);
   background:#ef5858; padding:12px; border-radius:8px; margin-bottom:14px;
 }
 .error{ color:var(--error); margin:4px 0; }
