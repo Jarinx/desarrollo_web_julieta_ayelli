@@ -35,12 +35,14 @@ def get_avisos_adopcion(limit, pag):
     
     offset = (pag-1) * limit
 
+    # avisos desde 0 hasta offset
     prev = (
         session.query(AvisoAdopcion)
         .order_by(AvisoAdopcion.fecha_ingreso.desc())
         .all()[:offset]
     )
 
+    # avisos desde offset hasta offset+5
     avisos = (
         session.query(AvisoAdopcion)
         .order_by(AvisoAdopcion.fecha_ingreso.desc())
@@ -49,6 +51,7 @@ def get_avisos_adopcion(limit, pag):
         .all()
     )
 
+    # avisos desde offset+5 hasta el último
     next = (
         session.query(AvisoAdopcion)
         .order_by(AvisoAdopcion.fecha_ingreso.desc())

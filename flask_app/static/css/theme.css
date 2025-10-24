@@ -61,12 +61,12 @@ nav a{ text-decoration:none; }
 .btn:hover{ background:#e3578d; }
 .btn.primary{ background:var(--accent); color:#000000; border-color:transparent; font-weight:700; }
 .btn.primary:hover{ background:#e3578d; }
-.btn.link{ background:transparent; border-color:transparent; color:var(--accent); text-decoration:underline; }
+.btn.link{ background:var(--accent); border-color:transparent; color:var(--accent); text-decoration:underline; }
 .btn.ghost{ background:transparent; border:1px dashed #ffffff; }
 
 /* Back link */
 .back-link{
-  display:inline-flex; align-items:center; gap:6px;
+  display:block; align-items:center; gap:6px;
   font-weight:500; text-decoration:none; color:var(--ink);
 }
 .back-link:hover{ text-decoration:underline; }

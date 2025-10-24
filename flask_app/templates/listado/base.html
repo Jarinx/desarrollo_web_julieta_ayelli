@@ -6,12 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
   {% block css %}{% endblock %}
-  <style>
-    /* helpers comunes */
-    tr.clickable { cursor: pointer; }
-    .pager { display:flex; gap:.5rem; align-items:center; justify-content:center; margin-top:12px; }
-    .pager .btn[aria-disabled="true"] { opacity:.5; pointer-events:none; }
-  </style>
 </head>
 
 <body>
@@ -28,6 +22,8 @@
     {% block content %}{% endblock %}
   </main>
 
+  <!-- Scripts -->
+  <script lang="javascript" src="{{ url_for('static', filename='js/listado.js') }}"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

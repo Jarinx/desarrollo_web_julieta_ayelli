@@ -15,16 +15,17 @@
         <header>
             <div>
                 <h1>¡Hola! Bienvenido a PET x FAMILY</h1>
-                <h2>Gestionamos la adopción de perritos y gatitos en Chile :3 </h2>
+                <h2>&#128149; Gestionamos la adopción de perritos y gatitos en Chile &#128062;</h2>
                 <!-- navbar -->
                  <nav>
-                    <a href="{{ url_for('form_adopcion') }}" class="btn primary">Agregar nuevo aviso de adopción</a>
-                    <a href="{{ url_for('listado') }}" class="btn primary">Ver listado de adopciones</a>
-                    <a href="{{ url_for('estadisticas') }}" class="btn primary">Estadísticas</a>
+                    <a href="{{ url_for('form_adopcion') }}" class="btn primary">&#128221; Agregar nuevo aviso de adopción</a>
+                    <a href="{{ url_for('listado') }}" class="btn primary">&#128194; Ver listado de adopciones</a>
+                    <a href="{{ url_for('estadisticas') }}" class="btn primary">&#128202; Estadísticas</a>
                  </nav>
             </div>
         </header>
-        <br>
+        <!-- <br> -->
+        <section>
         <!-- listado últimos 5 avisos -->
         <table class="table-home table--verticals">
             <caption>Últimos 5 avisos de adopción agregados</caption>
@@ -51,6 +52,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        </section>
         
     </body>
 </html>

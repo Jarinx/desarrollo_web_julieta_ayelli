@@ -199,6 +199,14 @@ def listado():
     total_avisos = len(avisos) + len(prev) + len(next)
     total_paginas = max(1, math.ceil(total_avisos/pag_items))
 
+    print(f"(app) CANTIDADES AVISOS:\n"
+          f"- PREV = {len(prev)}\n"
+          f"- AVISOS = {len(avisos)}\n"
+          f"- NEXT = {len(next)}\n"
+          f"- => TOT_AVISOS = {total_avisos}\n"
+          f"- => TOT_PAGINAS = {total_paginas}\n"
+          )
+
     if pag > total_paginas:
         pag = total_paginas
 
