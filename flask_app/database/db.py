@@ -1,7 +1,7 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from database.models import Base, AvisoAdopcion, Foto, Comuna, Region, ContactarPor
+from database.models import AvisoAdopcion, Foto, Comuna, ContactarPor, Comentario
 
 DB_NAME = "tarea2"
 DB_USERNAME = "cc5002"
@@ -29,10 +29,9 @@ def plural_unidad(unidad, edad):
             return 'mes'
     return unidad
 
-# --- DATABASE FUNCTIONS ---
+# --- GET FROM DB FUNCTIONS ---
 def get_avisos_adopcion(limit, pag):
     session = SessionLocal()
-    
     offset = (pag-1) * limit
 
     # avisos desde 0 hasta offset
@@ -41,7 +40,6 @@ def get_avisos_adopcion(limit, pag):
         .order_by(AvisoAdopcion.fecha_ingreso.desc())
         .all()[:offset]
     )
-
     # avisos desde offset hasta offset+5
     avisos = (
         session.query(AvisoAdopcion)
@@ -50,7 +48,6 @@ def get_avisos_adopcion(limit, pag):
         .offset(offset)
         .all()
     )
-
     # avisos desde offset+5 hasta el último
     next = (
         session.query(AvisoAdopcion)
@@ -58,7 +55,6 @@ def get_avisos_adopcion(limit, pag):
         .offset(offset+limit)
         .all()
     )
-
     resultado = []
     for aviso in avisos:
         fotos = (
@@ -109,15 +105,13 @@ def get_avisos_adopcion(limit, pag):
             "total_fotos": len(fotos),
             "fotos": fotos_list
         })
+
     session.close()
-    
     return resultado, prev, next
 
 def get_aviso_detalle(aviso_id):
     session = SessionLocal()
-
     aviso = session.query(AvisoAdopcion).get(aviso_id)
-
     comuna_id = aviso.comuna_id
     region = session.query(Comuna).get(comuna_id).region.nombre
 
@@ -132,7 +126,6 @@ def get_aviso_detalle(aviso_id):
             "src": f"{f.ruta_archivo}/{f.nombre_archivo}",
             "alt": f"{aviso.cantidad} {aviso.tipo}(s)"
         })
-
     contactos = (
         session.query(ContactarPor)
         .filter(ContactarPor.aviso_id == aviso.id)
@@ -170,8 +163,8 @@ def get_aviso_detalle(aviso_id):
         "total_fotos": len(fotos),
         "fotos": fotos_list
     }
-    session.close()
 
+    session.close()
     return detalle
 
 def get_comuna_id_by_name(comuna):
@@ -180,6 +173,98 @@ def get_comuna_id_by_name(comuna):
     session.close()
     return comuna_id
 
+def get_avisos_por_dia():
+    session = SessionLocal()
+
+    avisos_x_dia = (
+        session.query(func.date(AvisoAdopcion.fecha_ingreso).label("dia"),
+                      func.count(AvisoAdopcion.id).label("avisos"))
+                      .group_by(func.date(AvisoAdopcion.fecha_ingreso))
+                      .order_by(func.date(AvisoAdopcion.fecha_ingreso))
+                      .limit(30)
+                      .all()
+    )
+    datos = []
+    for a in avisos_x_dia:
+        datos.append({
+            "dia": str(a.dia),
+            "avisos": a.avisos
+        })
+
+    session.close()
+    return datos
+
+def get_total_por_tipo():
+    session = SessionLocal()
+
+    total_x_tipo = (
+        session.query(AvisoAdopcion.tipo.label("tipo"),
+                      func.count(AvisoAdopcion.id).label("total"))
+                      .group_by(AvisoAdopcion.tipo)
+                      .all()
+    )
+    datos = []
+    for a in total_x_tipo:
+        datos.append({
+            "tipo": a.tipo,
+            "total": a.total
+        })
+
+    session.close()
+    return datos
+
+def get_por_mes_y_tipo():
+    session = SessionLocal()
+    mes_expr = func.date_format(AvisoAdopcion.fecha_ingreso, '%Y-%m')
+
+    avisos_x_mes_tipo = (
+        session.query(
+            mes_expr.label("mes"),
+            AvisoAdopcion.tipo.label("tipo"),
+            func.count(AvisoAdopcion.id).label("avisos")
+        )
+        .group_by(mes_expr, AvisoAdopcion.tipo)
+        .order_by(mes_expr.asc())
+        .all()
+    )
+    datos = []
+    for a in avisos_x_mes_tipo:
+        datos.append({
+            "mes": a.mes,
+            "tipo": a.tipo,
+            "avisos": a.avisos
+        })
+
+    session.close()
+    return datos
+    
+def get_estadisticas():
+    stats = {
+        "avisos_por_dia": get_avisos_por_dia(),
+        "total_por_tipo": get_total_por_tipo(),
+        "por_mes_y_tipo": get_por_mes_y_tipo()
+    }
+    return stats
+
+def get_comentarios(aviso_id):
+    session = SessionLocal()
+    comentarios = (
+        session.query(Comentario)
+        .filter(Comentario.aviso_id == aviso_id)
+        .order_by(Comentario.id.desc())
+        .all()
+    )
+    comentarios_list = []
+    for c in comentarios:
+        comentarios_list.append({
+            "nombre": c.nombre,
+            "texto": c.texto,
+            "fecha": c.fecha.strftime("%Y-%m-%d %H:%M")
+        })
+    session.close()
+    return comentarios_list
+
+# --- ADD TO DB FUNCTIONS ---
 def add_aviso_adopcion(
         fecha_ingreso,
         comuna_id,
@@ -213,7 +298,6 @@ def add_aviso_adopcion(
     session.commit()
     id = new_aviso.id
     session.close()
-    print("(db) Creando aviso:", new_aviso)
 
     return id
 
@@ -232,10 +316,8 @@ def add_contactar_por(
     session.commit()
     id = new_contacto.id
     session.close()
-    print("(db) Agregando contacto:", new_contacto)
 
     return id
-
 
 def add_foto(
         ruta_archivo,
@@ -252,7 +334,32 @@ def add_foto(
     session.commit()
     id = new_foto.id
     session.close()
-    print("(db) Agregando foto:", new_foto)
 
     return id
+
+def add_comentario(
+        nombre,
+        texto,
+        fecha,
+        aviso_id):
     
+    session = SessionLocal()
+
+    new_comentario = Comentario(nombre=nombre,
+                                texto=texto,
+                                fecha=fecha,
+                                aviso_id=aviso_id)
+    
+    session.add(new_comentario)
+    session.commit()
+    
+    new_comentario_dict = {
+        "nombre": new_comentario.nombre,
+        "texto": new_comentario.texto,
+        "fecha": new_comentario.fecha.strftime("%Y-%m-%d %H:%M"),
+        "aviso_id": new_comentario.aviso_id
+    }
+
+    session.close()
+
+    return new_comentario_dict

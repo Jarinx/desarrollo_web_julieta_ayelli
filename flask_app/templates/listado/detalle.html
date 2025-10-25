@@ -8,15 +8,15 @@
 
 <!-- Header -->
 {% block header %}
-<a href="{{ url_for('listado') }}" class="back-link">⟵ Volver al listado</a>
+<a href="{{ url_for('listado') }}" class="back-link">&#8592; Volver al listado</a>
 <h1>Detalle del aviso n° {{ aviso.aviso_id }}</h1>
 <h2>Fecha de publicación: {{ aviso.fecha_ingreso }}</h2>
 {% endblock %}
 
 <!-- Main -->
 {% block content %}
-<!-- Detalle completo -->
-<section id="detalle" class="card">
+<!-- Sección detalle completo -->
+<section id="detalle" class="card row cols-2">
     <div class="det-grid">
         <div>
           <h4>¿Dónde?</h4>
@@ -26,6 +26,7 @@
             <li><strong>Sector:</strong> {{ aviso.sector }}</li>
           </ul>
         </div>
+        <hr>
         <div>
           <h4>¿Contacto de esta publicación?</h4>
           <ul>
@@ -41,6 +42,7 @@
             </li>
           </ul>
         </div>
+        <hr>
         <div>
           <h4>¿Qué mascota ofrece en adopción?</h4>
           <ul>
@@ -48,12 +50,10 @@
             <li><strong>Cantidad:</strong> {{ aviso.cantidad }}</li>
             <li><strong>Edad:</strong> {{ aviso.edad }} {{ aviso.unidad_medida }}</li>
             <li><strong>Fecha de entrega:</strong> {{ aviso.fecha_entrega }}</li>
-            <li><strong>Descripción:</strong>
-                <p>{{ aviso.descripcion }}</p>
-            </li>
+            <li><strong>Descripción:</strong> {{ aviso.descripcion }}</li>
           </ul>
         </div>
-      </div>
+    </div>
 
     <!-- Fotos (320x240 px)-->
      <div>
@@ -67,7 +67,7 @@
      </div>
 </section>
 
- <!-- Modal de imagen (800x600 px) -->
+<!-- Modal de imagen (800x600 px) -->
 <div id="imgModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="imgTitle" style="display:none">
   <div class="modal">
     <div class="modal-head">
@@ -79,6 +79,50 @@
     </div>
   </div>
 </div>
+
+<hr>
+
+<!-- Sección de comentarios -->
+<section id="comentarios" class="card">
+  <div id="comentarios-error-global" role="alert" aria-live="assertive" class="error-box" style="display:none;"></div>
+
+  <header>
+    <h3 style="text-align: center;">Comentarios</h3>
+  </header>
+
+  <div class="row cols-2">
+    <!-- Form de comentarios -->
+    <form id="form-comentario">
+      <h4>Deja tu comentario:</h4>
+      <div id="comentario-error" role="alert" aria-live="assertive" class="error-box" style="display:none"></div>
+
+      <div>
+        <div>
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" name="nombre" maxlength="80" required>
+        </div>
+        <div>
+          <label for="texto">Comentario:</label>
+          <textarea id="texto" name="texto" rows="4" cols="50" required></textarea>
+        </div>
+        <div class="chips">
+          <button type="submit" class="btn primary">Agregar comentario</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Lista de comentarios -->
+    <div>
+      <h4>Comentarios:</h4>
+      <ul id="lista-comentarios" class="comentarios-lista"></ul>
+      <!-- Mensaje si no hay comentarios -->
+      <p id="sin-comentarios" class="muted" style="display:none;">Aún no hay comentarios</p>
+    </div>
+  </div>
+</section>
 {% endblock %}
 
-{% block scripts %}{% endblock %}
+{% block scripts %}
+<script>const AVISO_ID = '{{ aviso.aviso_id | int }}';</script>
+<script lang="javascript" src="{{ url_for('static', filename='js/comentarios.js') }}"></script>
+{% endblock %}

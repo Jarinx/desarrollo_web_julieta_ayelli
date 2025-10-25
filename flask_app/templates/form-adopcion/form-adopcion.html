@@ -14,7 +14,7 @@
     <body>
         <!-- Header -->
         <header>
-            <a href="{{ url_for('portada') }}" class="back-link">⟵ Volver a la portada</a>
+            <a href="{{ url_for('portada') }}" class="back-link">&#8592; Volver a la portada</a>
             <h1>Formulario para agregar un aviso de adopción</h1>
         </header>
 
@@ -89,34 +89,17 @@
                             <label for="contactar-por">Contactar por (opcional)</label>
                             <small class="hint">Máximo 5 opciones</small>
                             <div id="contactar-por" class="row cols-2" data-max="5">
-                                <!-- <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="whatsapp">WhatsApp  </label>
-                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="telegram">Telegram  </label>
-                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="X">X  </label>
-                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="instagram">Instagram  </label>
-                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="tiktok">TikTok  </label>
-                                <label><input type="checkbox" name="contactar-por" minlength="4" maxlength="50" value="otra">Otra  </label> -->
                                 {% for value, label in contact_methods %}
                                     {% set checked = contactar_por_select and (value in contactar_por_select) %}
                                     <label>
-                                    <input
-                                        type="checkbox"
-                                        name="contactar-por"
-                                        value="{{ value }}"
-                                        {% if checked %}checked{% endif %}>
+                                    <input type="checkbox" name="contactar-por" value="{{ value }}" {% if checked %}checked{% endif %}>
                                     {{ label }}
                                     {% if checked %}
-                                        <input
-                                        type="text"
-                                        id="contactar-{{ value }}"
-                                        name="contactar-{{ value }}"
-                                        minlength="4"
-                                        maxlength="50"
-                                        value="{{ contactar_ids.get(value, '') }}">
+                                        <input type="text" id="contactar-{{ value }}" name="contactar-{{ value }}" minlength="4" maxlength="50" value="{{ contactar_ids.get(value, '') }}">
                                     {% endif %}
                                     </label>
                                 {% endfor %}
                             </div>
-                            
                         </div>
                     </fieldset>
 

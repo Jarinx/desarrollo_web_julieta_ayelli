@@ -293,8 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
     prefillFecha();
     actualizarBotonesEliminarFoto();
     // Contactar por:
-    // Array.from(document.querySelectorAll('#contactar-por input[type="checkbox"]')).forEach(cb =>
-    //     cb.addEventListener('change', contactarMulti));
      contactarInit();
     const cont = document.getElementById('contactar-por');
     if (cont) cont.addEventListener('change', contactarDelegadoChange);

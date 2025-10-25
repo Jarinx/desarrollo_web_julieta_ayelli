@@ -102,7 +102,7 @@ def validate_fotos(files):
 
     return True, ""
 
-def validate_form(form_array):
+def validate_aviso(form_array):
 
     # ¿dónde?
     region = form_array[0]
@@ -142,7 +142,6 @@ def validate_form(form_array):
     ]
     errores = []
     for v in valids:
-        print(f"(valid) {v}")
         status, msg = v[1] 
         if not status:
             errores.append(msg)

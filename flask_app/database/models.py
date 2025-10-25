@@ -8,6 +8,7 @@ Base = declarative_base()
 #   |comuna| 1 ---< N |aviso_adopcion|
 #   |aviso_adopcion| 1 ———< N |foto|
 #   |aviso_adopcion| 1 ———< N |contactar_por|
+#   |aviso_adopcion| 1 ———< N |comentario|
 
 class Region(Base):
     __tablename__ = 'region'
@@ -53,6 +54,7 @@ class AvisoAdopcion(Base):
     comuna = relationship("Comuna", back_populates="avisos")
     fotos = relationship("Foto", back_populates="aviso", cascade="all, delete-orphan")
     contactos = relationship("ContactarPor", back_populates="aviso", cascade="all, delete-orphan")
+    comentarios = relationship("Comentario", back_populates="aviso", cascade="all, delete-orphan")
 
 class Foto(Base):
     __tablename__ = 'foto'
@@ -79,3 +81,17 @@ class ContactarPor(Base):
     aviso_id = Column(Integer, ForeignKey('aviso_adopcion.id'), nullable=False)
 
     aviso = relationship("AvisoAdopcion", back_populates="contactos")
+
+class Comentario(Base):
+    __tablename__ = 'comentario'
+    __table_args__ = (
+        Index('fk_comentario_aviso1_idx', 'aviso_id'),
+    )
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    nombre = Column(String(80), nullable=False)
+    texto = Column(String(300), nullable=False)
+    fecha = Column(DateTime, nullable=False)
+    aviso_id = Column(Integer, ForeignKey('aviso_adopcion.id'), nullable=False)
+
+    aviso = relationship("AvisoAdopcion", back_populates="comentarios")

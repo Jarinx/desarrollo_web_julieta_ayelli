@@ -58,3 +58,10 @@ tr.clickable { cursor: pointer; }
 .pager .btn{ padding: 0 5px 5px 5px; font-size: 25px; width: 33px; height: 35px;}
 .pager .btn[aria-disabled="true"] { opacity:.5; pointer-events:none; }
 .pager .btn.texto{padding: 0 10px 0 10px; font-size: 16px;}
+
+/* Estilos para la sección de comentarios */
+.comentarios-lista { list-style:none; margin:0; padding:0; }
+.comentarios-lista li { padding:10px 0; border-bottom:1px solid var(--line-softer); }
+.comentarios-lista li:last-child { border-bottom:none; }
+
+.error-box{ width:90%;}

@@ -1,11 +1,12 @@
-from flask import Flask, flash, request, render_template, redirect, url_for, jsonify
+from flask import Flask, request, render_template, redirect, url_for, jsonify
 from database import db
 from werkzeug.utils import secure_filename
 import hashlib
 import filetype # type: ignore
 import os
 import datetime as dt
-from utils.validations import validate_form
+from utils.validations_form_adopcion import validate_aviso
+from utils.validations_form_comentario import validate_comentario
 import math
 
 UPLOAD_FOLDER = r'static\uploads\avisos'
@@ -99,10 +100,7 @@ def post_aviso_adopcion():
         fotos
     ]
 
-    print("(app) Datos recibidos:", form_array)
-    print("(app) Validez form:", validate_form(form_array))
-
-    status, errores = validate_form(form_array)
+    status, errores = validate_aviso(form_array)
 
     if status:
         # 1. guardar info del aviso en la db
@@ -135,23 +133,16 @@ def post_aviso_adopcion():
             unidad_medida,
             fecha_entrega,
             descripcion)
-        
-        print("(app) Nuevo aviso ID:", new_aviso_id)
 
         # 2. guardar contactos en la db
-        print("(app) Contactar_por lista:", contactar_por_nombre)
         for nombre in contactar_por_nombre:
             identificador = contactar_por_ids.get(nombre)
             new_contacto_id = db.add_contactar_por(nombre, identificador, new_aviso_id)
-            print("(app) Nuevo contacto:", new_contacto_id, nombre, identificador)
         
         # 3. guardar fotos en la db
-        print("(app) Fotos lista:", fotos)
         ruta_archivo = os.path.join(app.config["UPLOAD_FOLDER"], f"aviso_{new_aviso_id}")
         os.makedirs(ruta_archivo, exist_ok=True)
-        print("(app) Ruta archivo fotos:", ruta_archivo)
         for foto in fotos:
-            print("(app) Procesando foto:", foto.filename)
             # 3.i generar nombre random para cada foto
             _filename = hashlib.sha256(
                 secure_filename(foto.filename) # nombre del archivo
@@ -159,19 +150,12 @@ def post_aviso_adopcion():
                 ).hexdigest()
             _extension = filetype.guess(foto).extension
             nombre_archivo = f"{_filename}.{_extension}"
-            print(f"(app) Nombre archivo foto generado: {nombre_archivo}")
 
             # 3.ii guardar foto en folder correspondiente
             foto.save(os.path.join(ruta_archivo, nombre_archivo))
-            # foto.save(ruta_archivo)
-            print(f"(app) Foto guardada en: {ruta_archivo}/{nombre_archivo}")
 
             # 3.iii guardar foto en la db
-            new_foto_id = db.add_foto(ruta_archivo, nombre_archivo, new_aviso_id)
-            print(f"(app) Nueva foto ID: {new_foto_id} guardada en: {ruta_archivo}/{nombre_archivo}")
-
-        print("(app) AVISO CREADO EXITOSAMENTE!")
-
+            db.add_foto(ruta_archivo, nombre_archivo, new_aviso_id)
         return redirect(url_for("form_adopcion", submitted=1))
     
     # si hubo algún error en la validación
@@ -199,14 +183,6 @@ def listado():
     total_avisos = len(avisos) + len(prev) + len(next)
     total_paginas = max(1, math.ceil(total_avisos/pag_items))
 
-    print(f"(app) CANTIDADES AVISOS:\n"
-          f"- PREV = {len(prev)}\n"
-          f"- AVISOS = {len(avisos)}\n"
-          f"- NEXT = {len(next)}\n"
-          f"- => TOT_AVISOS = {total_avisos}\n"
-          f"- => TOT_PAGINAS = {total_paginas}\n"
-          )
-
     if pag > total_paginas:
         pag = total_paginas
 
@@ -224,7 +200,32 @@ def aviso_detalle(aviso_id):
     aviso = db.get_aviso_detalle(aviso_id)
     return render_template("listado/detalle.html", aviso=aviso)
 
+@app.route("/api/aviso/<int:aviso_id>/comentarios", methods=["GET"])
+def api_get_comentarios(aviso_id):
+    comentarios = db.get_comentarios(aviso_id)
+    return jsonify({"comentarios": comentarios})
+
+@app.route("/api/aviso/<int:aviso_id>/comentarios", methods=["POST"])
+def api_post_comentario(aviso_id):
+    data = request.get_json()
+    nombre = data.get("nombre", "")
+    texto = data.get("texto", "")
+
+    form_array = [nombre, texto]
+    status, errores = validate_comentario(form_array)
+
+    if status:
+        new_comentario = db.add_comentario(nombre, texto, dt.datetime.now(), aviso_id)
+        return jsonify({"comentario": new_comentario})
+    else:
+        return jsonify({"errores": errores}), 400
+
 # --- ESTADISTICAS ---
 @app.route("/estadisticas")
 def estadisticas():
     return render_template("estadisticas/estadisticas.html")
+
+@app.route("/api/estadisticas")
+def api_estadisticas():
+    stats = db.get_estadisticas()
+    return jsonify(stats)
