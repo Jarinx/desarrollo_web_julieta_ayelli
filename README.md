@@ -2,8 +2,10 @@
 
 # Consideraciones generales:
 - En zonas donde se pedía tener el link a la portada al final de la página, lo cambié para que estuviera en el header, ya que se me hacía más intuitivo y visualmente estético.
+- En el listado de avisos, hay paginación por botones y por input.
+- Con respecto a las fotos: cada aviso al ser agregado crea una subcarpeta dentro de `static\uploads\avisos`, y ahí se van guardando las fotos correspondientes a cada aviso. Se guardan en tamaño original, y luego se adecúa el tamaño (según lo pedido en el enunciado) con CSS.
 
-# Instrucciones generales:
+# Instrucciones para correr la aplicación:
 Para correr la app correctamente, seguir en orden los pasos detallados a continuación.
 ### Ambiente (hacer lo siguiente desde root del repo):
 1. Crear venv: `python -m venv .venv`
@@ -30,6 +32,7 @@ SHOW GRANTS FOR 'cc5002'@'localhost'; -- para verificar que 'cc5002' tiene los p
 **3. Salir:** `exit`
 
 **4. Crear la db *tarea2*:**
+*En `data-invent.sql` hice varios avisos con información inventada, para poder visualizar la app con datos ya ingresados.*
 
 ```powershell
 cmd /c "mysql -ucc5002 -p < tarea2.sql" # ejecuta tarea2.sql
@@ -37,6 +40,8 @@ cmd /c "mysql -ucc5002 -p < tarea2.sql" # ejecuta tarea2.sql
 cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < region-comuna.sql" # ejecuta region-comuna.sql
 
 cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < data-invent.sql" # ejecuta data-invent.sql
+
+cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < tabla-comentario.sql" # ejecuta tabla-comentario.sql
 ```
 
 **5. Entrar a db *tarea2* con user *cc5002*:** `mysql -ucc5002 -p tarea2`
@@ -52,5 +57,5 @@ WHERE nombre = "Lo Barrenechea";
 **7. Salir:** `exit`
 
 ### Correr app:
-Ejecutar en terminal: `.\run_app.bat`
+Ejecutar en terminal dentro de `flask_app`: `flask run`
 

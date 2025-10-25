@@ -29,6 +29,15 @@ VALUES ('../../static/images/pets','puppy-3.jpg', @av1);
 
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('whatsapp', '+569.77777777', @av1);
+INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
+VALUES ('instagram', '@juana.perez', @av1);
+INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
+VALUES ('telegram', '@juana.perez', @av1);
+INSERT INTO `comentario` (`aviso_id`, `autor_nombre`, `texto`, `fecha`)
+VALUES (@av1, 'Diego Fernández', '¿Aceptan visitas con niños? Tengo dos pequeños y queremos saber si alguno compatible.', '2025-09-05 20:44');
+INSERT INTO `comentario` (`aviso_id`, `autor_nombre`, `texto`, `fecha`)
+VALUES (@av1, 'Antonella', 'Les dejo mi número por si quieren coordinar: +56 9 8765 4321. He adoptado antes y puedo dar referencias.', '2025-09-04 09:30');
+
 
 -- (2)
 INSERT INTO `tarea2`.`aviso_adopcion`
@@ -52,6 +61,9 @@ VALUES ('../../static/images/pets','american-bullys.jpg', @av2);
 
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('instagram', '@bullys_provi', @av2);
+INSERT INTO `comentario` (`aviso_id`, `autor_nombre`, `texto`, `fecha`)
+VALUES (@av2, 'Carlos R.', 'Ojalá encuentren un hogar pronto :(', '2025-09-10 18:05');
+
 
 -- (3)
 INSERT INTO `tarea2`.`aviso_adopcion`
@@ -96,9 +108,6 @@ SET @av4 := LAST_INSERT_ID();
 INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
 VALUES ('../../static/images/pets','gato-dormido.jpg', @av4);
 
-INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
-VALUES ('telegram', 't.me/gatos_losdom', @av4);
-
 -- (5)
 INSERT INTO `tarea2`.`aviso_adopcion`
 (`fecha_ingreso`,`comuna_id`,`sector`,`nombre`,`email`,`celular`,
@@ -112,7 +121,7 @@ VALUES
   NULL,
  'perro', 1, 2, 'm',
  '2025-08-31 19:20:00',
- 'Cachorro rescatado, necesita hogar temporal o definitivo.'
+ 'Cachorro rescatado, necesita hogar temporal o definitivo. Aprox 2 meses.'
 );
 SET @av5 := LAST_INSERT_ID();
 
@@ -121,6 +130,11 @@ VALUES ('../../static/images/pets','puppy-pasto.jpg', @av5);
 
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('whatsapp', '+569.44444444', @av5);
+INSERT INTO `comentario` (`aviso_id`, `autor_nombre`, `texto`, `fecha`)
+VALUES (@av5, 'María López', '¿Sigue disponible? Me interesa mucho, vivo cerca y puedo verlo hoy en la tarde.', '2025-09-25 14:12');
+INSERT INTO `comentario` (`aviso_id`, `autor_nombre`, `texto`, `fecha`)
+VALUES (@av5, 'Sofía G', 'Excelente descripción y fotos. ¿Podrían decir la edad exacta? En la publicación aparece ''aprox''.', '2025-09-10 11:17');
+
 
 -- (6)
 INSERT INTO `tarea2`.`aviso_adopcion`
@@ -145,5 +159,4 @@ VALUES ('../../static/images/pets','gato-5-annos.jpg', @av6);
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('whatsapp', '+569.44444444', @av6);
 
--- COMMIT
 COMMIT;
