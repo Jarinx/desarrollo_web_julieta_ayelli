@@ -32,14 +32,15 @@ SHOW GRANTS FOR 'cc5002'@'localhost'; -- para verificar que 'cc5002' tiene los p
 **3. Salir:** `exit`
 
 **4. Crear la db *tarea2*:**
+
 *En `data-invent.sql` hice varios avisos con información inventada, para poder visualizar la app con datos ya ingresados.*
 
 ```powershell
+# Ejecutar dentro de carpeta 'flask_app\database':
 cmd /c "mysql -ucc5002 -p < tarea2.sql" # ejecuta tarea2.sql
 
+# Ejecutar dentro de carpeta 'flask_app\database\helpers':
 cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < region-comuna.sql" # ejecuta region-comuna.sql
-
-cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < data-invent.sql" # ejecuta data-invent.sql
 
 cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < tabla-comentario.sql" # ejecuta tabla-comentario.sql
 ```
@@ -55,6 +56,12 @@ WHERE nombre = "Lo Barrenechea";
 ```
 
 **7. Salir:** `exit`
+
+**8. Cargar datos inventados:**
+
+```powershell
+cmd /c "mysql -ucc5002 -p tarea2 --default-character-set=utf8mb4 < data-invent.sql" # ejecuta data-invent.sql
+```
 
 ### Correr app:
 Ejecutar en terminal dentro de `flask_app`: `flask run`

@@ -19,13 +19,13 @@ VALUES
 SET @av1 := LAST_INSERT_ID();
 
 INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
-VALUES ('../../static/images/pets','3-puppies.jpg', @av1);
+VALUES ('../../static/uploads/pets','3-puppies.jpg', @av1);
 INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
-VALUES ('../../static/images/pets','puppy-1.jpg', @av1);
+VALUES ('../../static/uploads/pets','puppy-1.jpg', @av1);
 INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
-VALUES ('../../static/images/pets','puppy-2.jpg', @av1);
+VALUES ('../../static/uploads/pets','puppy-2.jpg', @av1);
 INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
-VALUES ('../../static/images/pets','puppy-3.jpg', @av1);
+VALUES ('../../static/uploads/pets','puppy-3.jpg', @av1);
 
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('whatsapp', '+569.77777777', @av1);
@@ -33,9 +33,9 @@ INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('instagram', '@juana.perez', @av1);
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('telegram', '@juana.perez', @av1);
-INSERT INTO `comentario` (`aviso_id`, `autor_nombre`, `texto`, `fecha`)
+INSERT INTO `comentario` (`aviso_id`, `nombre`, `texto`, `fecha`)
 VALUES (@av1, 'Diego Fernández', '¿Aceptan visitas con niños? Tengo dos pequeños y queremos saber si alguno compatible.', '2025-09-05 20:44');
-INSERT INTO `comentario` (`aviso_id`, `autor_nombre`, `texto`, `fecha`)
+INSERT INTO `comentario` (`aviso_id`, `nombre`, `texto`, `fecha`)
 VALUES (@av1, 'Antonella', 'Les dejo mi número por si quieren coordinar: +56 9 8765 4321. He adoptado antes y puedo dar referencias.', '2025-09-04 09:30');
 
 
@@ -57,11 +57,11 @@ VALUES
 SET @av2 := LAST_INSERT_ID();
 
 INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
-VALUES ('../../static/images/pets','american-bullys.jpg', @av2);
+VALUES ('../../static/uploads/pets','american-bullys.jpg', @av2);
 
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('instagram', '@bullys_provi', @av2);
-INSERT INTO `comentario` (`aviso_id`, `autor_nombre`, `texto`, `fecha`)
+INSERT INTO `comentario` (`aviso_id`, `nombre`, `texto`, `fecha`)
 VALUES (@av2, 'Carlos R.', 'Ojalá encuentren un hogar pronto :(', '2025-09-10 18:05');
 
 
@@ -83,7 +83,7 @@ VALUES
 SET @av3 := LAST_INSERT_ID();
 
 INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
-VALUES ('../../static/images/pets','kitten.jpg', @av3);
+VALUES ('../../static/uploads/pets','kitten.jpg', @av3);
 
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('X', '@GatosLC', @av3);
@@ -106,7 +106,7 @@ VALUES
 SET @av4 := LAST_INSERT_ID();
 
 INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
-VALUES ('../../static/images/pets','gato-dormido.jpg', @av4);
+VALUES ('../../static/uploads/pets','gato-dormido.jpg', @av4);
 
 -- (5)
 INSERT INTO `tarea2`.`aviso_adopcion`
@@ -126,13 +126,13 @@ VALUES
 SET @av5 := LAST_INSERT_ID();
 
 INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
-VALUES ('../../static/images/pets','puppy-pasto.jpg', @av5);
+VALUES ('../../static/uploads/pets','puppy-pasto.jpg', @av5);
 
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('whatsapp', '+569.44444444', @av5);
-INSERT INTO `comentario` (`aviso_id`, `autor_nombre`, `texto`, `fecha`)
+INSERT INTO `comentario` (`aviso_id`, `nombre`, `texto`, `fecha`)
 VALUES (@av5, 'María López', '¿Sigue disponible? Me interesa mucho, vivo cerca y puedo verlo hoy en la tarde.', '2025-09-25 14:12');
-INSERT INTO `comentario` (`aviso_id`, `autor_nombre`, `texto`, `fecha`)
+INSERT INTO `comentario` (`aviso_id`, `nombre`, `texto`, `fecha`)
 VALUES (@av5, 'Sofía G', 'Excelente descripción y fotos. ¿Podrían decir la edad exacta? En la publicación aparece ''aprox''.', '2025-09-10 11:17');
 
 
@@ -154,7 +154,7 @@ VALUES
 SET @av6 := LAST_INSERT_ID();
 
 INSERT INTO `tarea2`.`foto` (`ruta_archivo`,`nombre_archivo`,`aviso_id`)
-VALUES ('../../static/images/pets','gato-5-annos.jpg', @av6);
+VALUES ('../../static/uploads/pets','gato-5-annos.jpg', @av6);
 
 INSERT INTO `tarea2`.`contactar_por` (`nombre`,`identificador`,`aviso_id`)
 VALUES ('whatsapp', '+569.44444444', @av6);
