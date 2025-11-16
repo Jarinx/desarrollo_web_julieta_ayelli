@@ -1,6 +1,5 @@
 .venv/
 .vs/
 docs/
-helpers/
 
 __pycache__/

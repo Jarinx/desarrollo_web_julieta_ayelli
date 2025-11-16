@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from database.models import AvisoAdopcion, Foto, Comuna, ContactarPor, Comentario
 
-DB_NAME = "tarea2"
+DB_NAME = "tarea4"
 DB_USERNAME = "cc5002"
 DB_PASSWORD = "programacionweb"
 DB_HOST = "localhost"
