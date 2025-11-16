@@ -1,3 +1,4 @@
+// ---- GENERAR GRÁFICOS DE ESTADÍSTICAS ----
 (async function () {
   async function cargarDatos() {
     const resp = await fetch("/api/estadisticas");
@@ -7,7 +8,7 @@
     }
     return resp.json();
   }
-
+  // Gráfico de línea: avisos por día
   function dibujarLinea(avisosPorDia) {
     const categorias = avisosPorDia.map(p => p.dia);
     const data = avisosPorDia.map(p => p.avisos);
@@ -24,7 +25,7 @@
       legend: { enabled: false }
     });
   }
-
+  // Gráfico de torta: total por tipo de mascota
   function dibujarTorta(totalPorTipo) {
     const data = totalPorTipo.map(item => ({
       name: item.tipo,
@@ -44,6 +45,7 @@
     });
   }
 
+  // Gráfico de barras: avisos por mes y tipo de mascota
   function dibujarBarras(porMesYTipo) {
     const mesesSet = new Set(porMesYTipo.map(r => r.mes));
     const mesesOrdenados = Array.from(mesesSet).sort();

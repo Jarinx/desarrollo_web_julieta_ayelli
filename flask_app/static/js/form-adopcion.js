@@ -1,6 +1,3 @@
-// Lógica del formulario de adopción
-// *Requiere reg-com.js*
-
 const form = document.getElementById('form-adopcion');
 
 /* (1) PRESENTACIÓN
@@ -44,46 +41,8 @@ function prefillFecha() {
 }
 
 /* --- CONTACTAR-POR CHECKBOXES --- */
-// function contactarMulti() {
-//     let checked = Array.from(document.querySelectorAll('#contactar_por input[type="checkbox"]:checked'));
-//     let unchecked = Array.from(document.querySelectorAll('#contactar_por input[type="checkbox"]:not(:checked)'));
-
-//     // validación: máximo 5 opciones
-//     if (checked.length > 5) {
-//         alert("Solo puedes colocar 5 opciones de contacto.");
-//         this.checked = false;
-//         return;
-//     }
-
-//     // red unchecked => eliminar  
-//     unchecked.forEach(cb => {
-//         const id = `contactar-${cb.value}`;
-//         const existingInput = document.getElementById(id);
-//         if (existingInput) {
-//             existingInput.remove();
-//         }
-//     });
-
-//     // red checked => agregar
-//     checked.forEach(cb => {
-//         const value = cb.value;
-//         const id = `contactar-${value}`;
-//         const wrap = cb.parentElement;
-//         // solo agregar si no fue checked antes
-//         if (!document.getElementById(id)) {
-//             const input = document.createElement('input');
-//             input.type = 'text';
-//             input.id = id;
-//             input.name = id;
-//             input.minlength = 4;
-//             input.maxlength = 50;
-//             wrap.appendChild(input);
-//         }
-//     });
-// }
-/* --- CONTACTAR-POR CHECKBOXES (robusto con delegación) --- */
 function crearInputIdentificador(val, labelText) {
-  const id = `contactar-${val}`;                 // <-- lo que espera Flask: form.get(f"contactar-{nombre}")
+  const id = `contactar-${val}`;                
   if (document.getElementById(id)) return;       // no duplicar
 
   // el input va junto al <label> que contiene el checkbox
@@ -95,7 +54,7 @@ function crearInputIdentificador(val, labelText) {
   const inp = document.createElement('input');
   inp.type = 'text';
   inp.id = id;
-  inp.name = id;                                  // <-- coincide con Flask
+  inp.name = id;                          
   inp.minLength = 4;
   inp.maxLength = 50;
   inp.placeholder = `${labelText} (ID o URL)`;
@@ -103,7 +62,7 @@ function crearInputIdentificador(val, labelText) {
 }
 
 function eliminarInputIdentificador(val) {
-  const id = `contactar-${val}`;                  // <-- igual que arriba
+  const id = `contactar-${val}`;                 
   const existing = document.getElementById(id);
   if (existing) existing.remove();
 }
@@ -190,7 +149,7 @@ function actualizarBotonesEliminarFoto() {
     });
 }
 
-/* (2) VALIDACIÓN */
+/* (2) VALIDACIÓN (solo para ux) */
 function validarForm() {
     const errors = [];
 
@@ -278,9 +237,6 @@ function onFormSubmit() {
 function confirmarEnvio() {
     closeConfirm();
     form.submit();
-    // document.getElementById('form-adopcion').classList.add('hidden');
-    // document.querySelector('#msg-aviso-recibido').style.display = 'block';
-    // window.scrollTo({top: 0, behavior: 'smooth'});
 }
 // modal confirmación: botón "No, no estoy seguro, quiero volver al formulario"
 function cancelarEnvio() {
@@ -308,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });    
 });
 
-/* --- ERRORES --- */
+/* --- ERRORES (para ux) --- */
 function mostrarErrores(errors) {
     const box = document.querySelector('#error-box');
     const list = document.querySelector('#error-list');

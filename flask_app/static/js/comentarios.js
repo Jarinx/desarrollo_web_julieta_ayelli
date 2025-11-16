@@ -1,3 +1,4 @@
+// Elementos de la sección de comentarios
 const listaComentarios = document.getElementById("lista-comentarios");
 const sinComentariosMsg = document.getElementById("sin-comentarios");
 const formComentario = document.getElementById("form-comentario");
