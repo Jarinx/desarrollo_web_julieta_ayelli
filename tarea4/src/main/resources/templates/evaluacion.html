@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>PxF-Evaluación_de_avisos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/listado.css}">
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
+    <link rel="stylesheet" th:href="@{/css/evaluacion.css}">
+</head>
+<body>
+    <header>
+        <h2>&#128149; PET x FAMILY &#128062;</h2>
+        <h1>Evaluación de Avisos de Adopción</h1>
+    </header>
+
+    <main>
+        <section id="evaluacion">
+            <table id="tabla-eval" class="table--verticals">
+                <caption>Últimos avisos publicados<br>
+                    <small><i>Haz click en los botones "Evaluar" para dejar tu nota del aviso</i></small></caption>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha Publicación</th>
+                        <th>Sector</th>
+                        <th>Cantidad Tipo<br>Edad</th>
+                        <th>Comuna</th>
+                        <th>Nota</th>
+                        <th>¿Evaluar?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${!avisos.empty}" th:each="aviso : ${avisos}">
+                        <td th:text="${aviso.id}">id</td>
+                        <td th:text="${aviso.fecha_ingreso}">yyyy-mm-dd</td>
+                        <td th:text="${aviso.sector}">sector</td>
+                        <td th:text="${aviso.cantidad} + ' ' + ${aviso.tipo} + ' ' + ${aviso.edad} + ' ' + ${aviso.unidad_medida}">cant tipo edad unidad</td>
+                        <td th:text="${aviso.comuna.nombre}">comuna</td>
+                        <td th:id="'nota-aviso-' + ${aviso.id}" th:text="${aviso.promedioNota}">nota</td>
+                        <td>
+                            <button class="btn evaluar" th:data-aviso-id="${aviso.id}">Evaluar</button>
+                        </td>
+                    </tr>
+                    <tr th:if="${avisos.empty}">
+                        <td colspan="7">No hay avisos para mostrar :c.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div id="modal-evaluacion" class="modal-backdrop" role="dialog" aria-modal="true" 
+            aria-labelledby="modal-titulo" style="display:none">
+  
+            <div class="modal" >
+                
+                <div class="modal-head">
+                <h5 id="modal-titulo">Evaluar Aviso</h5>
+                <button class="btn" id="btn-cerrar-modal">✕</button>
+                </div>
+                
+                <div class="modal-body">
+                    <p style="margin: 0;">Selecciona una nota del 1 al 7:</p>
+                    
+                    <div id="notas-container" class="chips">
+                        <button th:each="i : ${#numbers.sequence(1, 7)}"
+                                th:text="${i}"
+                                th:data-nota="${i}"
+                                class="btn btn-nota">
+                        </button>
+                    </div>
+                    
+                    <div class="chips">
+                        <button id="btn-confirmar-nota" class="btn primary">Agregar Nota</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+    
+    <script th:src="@{/js/evaluacion.js}"></script>
+</body>
+</html>

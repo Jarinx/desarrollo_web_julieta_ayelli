@@ -1,0 +1,33 @@
+
+.btn.evaluar{ background-color: var(--accent);}
+.btn.evaluar:hover{ background-color: #e3578d;}
+
+tbody tr:nth-child(odd){ background:none }
+tbody tr:hover{ background:none; cursor:default; }
+
+
+.btn-nota {
+  font-size: 1.1rem;
+  font-weight: bold;
+  width: 40px;      
+  height: 40px;    
+  padding: 5px;
+  justify-content: center;
+  background-color: var(--card); 
+  border: 1px solid var(--line);
+}
+
+.btn-nota:hover {
+  background-color: #e3578d; 
+}
+
+.btn-nota.selected {
+  background-color: var(--accent); 
+  color: #000000;
+  border-color: #000000;
+}
+
+.modal{width:auto; height: fit-content; padding: 10px; margin: 0%;}
+.modal-head{margin-bottom: 0%; height: fit-content;}
+.modal-body{display: grid; grid-template-rows: auto;
+           gap: 12px; justify-items: center; width: auto; height: auto;}
