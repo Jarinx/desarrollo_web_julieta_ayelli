@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Controller
-public class ListadoController {
+public class EvaluacionController {
     @Autowired
     private AvisoAdopcionRepository avisoRepo;
 
